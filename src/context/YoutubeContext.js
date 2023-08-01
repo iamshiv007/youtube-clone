@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-const axios = require('axios');
+import axios from "axios";
 
 const YoutubeContext = createContext()
 
@@ -10,29 +10,25 @@ export const ContextProvider = ({ children }) => {
   const [categoryVideos, setCategoryVideos] = useState([]);
 
   useEffect(() => {
-    // loadHomeVideos()
+    loadHomeVideos()
   }, []);
 
   // 1. Home Videos
   const loadHomeVideos = async () => {
     const options = {
       method: 'GET',
-      url: 'https://youtube-v31.p.rapidapi.com/search',
-      params: {
-        relatedToVideoId: '7ghhRHRP6t4',
-        part: 'id,snippet',
-        type: 'video',
-        maxResults: '50'
-      },
+      url: 'https://youtube138.p.rapidapi.com/home/',
+      params: { hl: 'en', gl: 'US' },
       headers: {
         'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
-        'X-RapidAPI-Host': 'youtube-v31.p.rapidapi.com'
+        'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
       }
     };
 
     try {
       const response = await axios.request(options);
       console.log(response.data);
+      setHomeVideos(response.data.contents)
     } catch (error) {
       console.error(error);
     }
