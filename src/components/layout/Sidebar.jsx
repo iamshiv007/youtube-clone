@@ -29,7 +29,7 @@ const Sidebar = () => {
         width={"fit-content"}
         padding={"10px 25px"}
         direction={"column"}
-        height={"100vh"}
+        height={"88vh"}
         bg={"black"}
         gap={1}
       >

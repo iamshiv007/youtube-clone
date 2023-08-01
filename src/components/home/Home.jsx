@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
 import Sidebar from "../layout/Sidebar";
 import Header from "../layout/Header";
-import { Box, Flex, Image } from "@chakra-ui/react";
+import { Box, Flex, Grid } from "@chakra-ui/react";
+import VideoCard from "../cards/VideoCard";
 
 const Home = () => {
   return (
@@ -13,7 +14,16 @@ const Home = () => {
           <Sidebar />
         </Box>
 
-        <Box width={"85%"}>Hello</Box>
+        <Grid
+          gridTemplateColumns={"1fr 1fr 1fr"}
+          gap={5}
+          padding={"30px"}
+          width={"85%"}
+        >
+          <VideoCard />
+          <VideoCard />
+          <VideoCard />
+        </Grid>
       </Flex>
     </Fragment>
   );
