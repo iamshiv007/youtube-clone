@@ -21,13 +21,13 @@ const VideoList = () => {
 
   // Video Title
   const formateTitle = (title) => {
-    const words = title.split(" ");
+    const char = title.split("");
 
-    if (words.length < 10) {
+    if (char.length < 60) {
       return title;
     }
 
-    return `${words.slice(0, 10).join(" ")}...`;
+    return `${char.slice(0, 60).join("")}...`;
   };
 
   // Duration
@@ -51,7 +51,9 @@ const VideoList = () => {
                 thumbnail={video?.video.thumbnails[0].url}
                 avatar={video.video.author?.avatar[0]?.url || ""}
                 postTime={video.video.publishedTimeText}
-                views={viewsConverter(video.video.stats.views || video.video.stats.viewers)}
+                views={viewsConverter(
+                  video.video.stats.views || video.video.stats.viewers
+                )}
                 channelName={video.video.author.title}
                 duration={durationConverter(video.video.lengthSeconds)}
               />

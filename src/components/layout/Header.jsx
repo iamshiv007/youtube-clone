@@ -38,7 +38,7 @@ const Header = () => {
               <BsBell />
             </Text>
             <Avatar
-              size={"sm"}
+              size={"xs"}
               name="Shivraj Gurjar"
               src="https://bit.ly/tioluwani-kolawole"
             />

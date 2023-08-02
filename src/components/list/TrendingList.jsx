@@ -34,13 +34,13 @@ const TrendingList = () => {
 
   // Video Title
   const formateTitle = (title) => {
-    const words = title.split(" ");
+    const char = title.split("");
 
-    if (words.length < 10) {
+    if (char.length < 60) {
       return title;
     }
 
-    return `${words.slice(0, 10).join(" ")}...`;
+    return `${char.slice(0, 60).join("")}...`;
   };
 
   useEffect(() => {
