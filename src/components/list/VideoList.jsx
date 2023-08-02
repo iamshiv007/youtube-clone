@@ -21,9 +21,10 @@ const VideoList = () => {
     <>
       <Grid gridTemplateColumns={"1fr 1fr 1fr"} gap={5} padding={"30px"}>
         {homeVideos &&
-          homeVideos.map((video) => {
+          homeVideos.map((video, key) => {
             return (
               <VideoCard
+                key={key}
                 title={video.video.title}
                 thumbnail={video?.video.thumbnails[0].url}
                 avatar={video.video.author.avatar[0].url}

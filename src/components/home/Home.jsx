@@ -7,17 +7,21 @@ import VideoList from "../list/VideoList";
 const Home = () => {
   return (
     <Fragment>
-      <Header />
+      <Box height={"100vh"} overflow={"hidden"}>
+        <Header />
 
-      <Flex bg={"black"}>
-        <Box minWidth={"fit-content"} width="15%">
-          <Sidebar />
-        </Box>
+        <Flex bg={"black"}>
+          <Box minWidth={"fit-content"} width="15%">
+            <Sidebar />
+          </Box>
 
-        <Box width={"75%"} margin={"auto"}>
-          <VideoList />
-        </Box>
-      </Flex>
+          <Box overflowY={"scroll"} height={"90vh"}>
+            <Box width={"85%"} margin={"auto"}>
+              <VideoList />
+            </Box>
+          </Box>
+        </Flex>
+      </Box>
     </Fragment>
   );
 };

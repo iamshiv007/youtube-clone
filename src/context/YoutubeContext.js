@@ -8,6 +8,7 @@ export default YoutubeContext
 export const ContextProvider = ({ children }) => {
   const [homeVideos, setHomeVideos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
+  const [autocomplete, setAutocomplete] = useState([]);
 
   useEffect(() => {
     loadHomeVideos()
@@ -27,7 +28,6 @@ export const ContextProvider = ({ children }) => {
 
     try {
       const response = await axios.request(options);
-      console.log(response.data);
       setHomeVideos(response.data.contents)
     } catch (error) {
       console.error(error);
@@ -60,8 +60,22 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
+  // 3. Autocomplete Suggetions
+  const generateAutocomplete = async (query) => {
+
+    try {
+
+      const res = await axios.get(`https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&client=firefox&q=${query}`)
+      console.log(res.data[1])
+      setAutocomplete(res.data[1])
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
-    <YoutubeContext.Provider value={{ homeVideos, categoryVideos, loadCategoryVideos }}>
+    <YoutubeContext.Provider value={{ homeVideos, categoryVideos, loadCategoryVideos, generateAutocomplete, autocomplete }}>
       {children}
     </YoutubeContext.Provider>
   )

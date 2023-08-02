@@ -1,19 +1,49 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import Logo from "../../images/Logo.png";
+import { NavLink } from "react-router-dom";
+import SearchBox from "./SearchBox";
+import { BsBell, BsCameraVideo } from "react-icons/bs";
 
 const Header = () => {
   return (
     <>
-      <Box height={"12vh"} bg={"black"}>
-        <Flex
-          height={"12vh"}
-          padding={"10px 35px"}
-          gap={4}
-          alignItems={"center"}
-        >
-          <Image height={"100%"} objectFit={"cover"} src={Logo} alt="logo" />
-          <Text color={"white"}>Video Library</Text>
+      <Box
+        borderBottomWidth="1px"
+        borderColor={"gray"}
+        padding={"8px 35px"}
+        height={"10vh"}
+        bg={"black"}
+        borderStyle={"solid"}
+        position={"sticky"}
+        top={0}
+        zIndex={10}
+      >
+        <Flex justifyContent={"space-between"} alignItems={"center"}>
+          <NavLink to="/">
+            <Flex gap={3} alignItems={"center"}>
+              <Image height={"7vh"} objectFit={"cover"} src={Logo} alt="logo" />
+              <Text color={"white"}>Video Library</Text>
+            </Flex>
+          </NavLink>
+
+          <Box>
+            <SearchBox />
+          </Box>
+
+          <Box display={"flex"} gap={6} alignItems={"center"}>
+            <Text fontSize={"xl"} color={"white"}>
+              <BsCameraVideo />
+            </Text>
+            <Text fontSize={"xl"} color={"white"}>
+              <BsBell />
+            </Text>
+            <Avatar
+              size={"sm"}
+              name="Shiv"
+              src="https://bit.ly/tioluwani-kolawole"
+            />
+          </Box>
         </Flex>
       </Box>
     </>

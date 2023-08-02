@@ -15,7 +15,7 @@ const VideoCard = ({
       <NavLink to="/">
         <Box>
           <Box
-            borderRadius={"15px"}
+            borderRadius={"8px"}
             position={"relative"}
             backgroundRepeat={"no-repeat"}
             height={"160px"}

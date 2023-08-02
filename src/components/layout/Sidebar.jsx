@@ -7,7 +7,7 @@ import { FaRegLaughSquint } from "react-icons/fa";
 import { GiLoveSong } from "react-icons/gi";
 import { DiReact } from "react-icons/di";
 import { RiJavascriptFill } from "react-icons/ri";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 const sidebarData = [
   { name: "Home", icon: <AiFillHome /> },
@@ -27,11 +27,13 @@ const Sidebar = () => {
     <>
       <Flex
         width={"fit-content"}
-        padding={"10px 25px"}
+        padding={"30px"}
         direction={"column"}
-        height={"88vh"}
+        height={"90vh"}
         bg={"black"}
         gap={1}
+        position={"relative"}
+        left={0}
       >
         {sidebarData.map((data) => (
           <NavLink
@@ -41,7 +43,7 @@ const Sidebar = () => {
             <Box
               color="white"
               display="flex"
-              gap={3}
+              gap={6}
               borderRadius="5px"
               padding="5px 15px"
               alignItems="center"
@@ -49,7 +51,8 @@ const Sidebar = () => {
               _hover={{ background: "gray" }}
             >
               {" "}
-              {data.icon} {data.name}
+              <Text fontSize="xl">{data.icon} </Text>{" "}
+              <Text fontSize={"lg"}> {data.name}</Text>
             </Box>
           </NavLink>
         ))}
