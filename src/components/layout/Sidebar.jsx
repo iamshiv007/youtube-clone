@@ -30,7 +30,6 @@ const Sidebar = () => {
         padding={"30px"}
         direction={"column"}
         height={"90vh"}
-        bg={"black"}
         gap={1}
         position={"relative"}
         left={0}
@@ -48,7 +47,7 @@ const Sidebar = () => {
               padding="5px 15px"
               alignItems="center"
               zIndex={10}
-              _hover={{ background: "gray" }}
+              _hover={{ background: "#0f0f0f" }}
             >
               {" "}
               <Text fontSize="xl">{data.icon} </Text>{" "}

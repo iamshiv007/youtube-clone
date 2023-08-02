@@ -9,6 +9,7 @@ export const ContextProvider = ({ children }) => {
   const [homeVideos, setHomeVideos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
   const [autocomplete, setAutocomplete] = useState([]);
+  const [trendingVideos, setTrendingVideos] = useState([]);
 
   useEffect(() => {
     loadHomeVideos()
@@ -19,7 +20,7 @@ export const ContextProvider = ({ children }) => {
     const options = {
       method: 'GET',
       url: 'https://youtube138.p.rapidapi.com/home/',
-      params: { hl: 'en', gl: 'US' },
+      params: { hl: 'hi', gl: 'IN' },
       headers: {
         'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
         'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
@@ -74,8 +75,14 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
+  // 4. Trending Videos
+  const getTrendingVideos = async () => {
+    const res = await axios.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=IN&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc')
+    setTrendingVideos(res.data.items)
+  }
+
   return (
-    <YoutubeContext.Provider value={{ homeVideos, categoryVideos, loadCategoryVideos, generateAutocomplete, autocomplete }}>
+    <YoutubeContext.Provider value={{ homeVideos, categoryVideos, loadCategoryVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos }}>
       {children}
     </YoutubeContext.Provider>
   )

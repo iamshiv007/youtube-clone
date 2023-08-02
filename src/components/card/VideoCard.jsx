@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
@@ -9,6 +9,7 @@ const VideoCard = ({
   postTime,
   views,
   channelName,
+  duration,
 }) => {
   return (
     <>
@@ -18,7 +19,7 @@ const VideoCard = ({
             borderRadius={"8px"}
             position={"relative"}
             backgroundRepeat={"no-repeat"}
-            height={"160px"}
+            height={"180px"}
             backgroundImage={thumbnail}
             backgroundSize={"cover"}
           >
@@ -32,20 +33,28 @@ const VideoCard = ({
               padding={"3px 8px"}
               borderRadius={"5px"}
             >
-              0:06:23
+              {duration || "0:06:23"}
             </Text>
           </Box>
 
           <Flex marginTop={"10px"} gap={3}>
-            <Image
-              height={"35px"}
-              borderRadius={"100%"}
-              src={avatar}
-              alt="channel"
-            />
+            {avatar ? (
+              <Image
+                height={"35px"}
+                borderRadius={"100%"}
+                src={avatar}
+                alt="channel"
+              />
+            ) : (
+              <Avatar
+                size={"sm"}
+                name={channelName}
+                src="https://bit.ly/tioluwani-kolawole"
+              />
+            )}
 
             <Box color={"white"}>
-              <Text fontWeight={"bold"}>{title}</Text>
+              <Text fontWeight={"semibold"}>{title}</Text>
               <Text marginTop={"5px"} fontSize={"xs"}>
                 {channelName}
               </Text>

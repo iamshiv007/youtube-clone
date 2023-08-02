@@ -13,7 +13,6 @@ const Header = () => {
         borderColor={"gray"}
         padding={"8px 35px"}
         height={"10vh"}
-        bg={"black"}
         borderStyle={"solid"}
         position={"sticky"}
         top={0}
@@ -40,7 +39,7 @@ const Header = () => {
             </Text>
             <Avatar
               size={"sm"}
-              name="Shiv"
+              name="Shivraj Gurjar"
               src="https://bit.ly/tioluwani-kolawole"
             />
           </Box>

@@ -9,6 +9,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/category/:category' element={<Home />} />
         </Routes>
       </BrowserRouter>
     </Fragment>

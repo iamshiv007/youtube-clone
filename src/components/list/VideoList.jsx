@@ -2,10 +2,12 @@ import React, { useContext } from "react";
 import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
 import VideoCard from "../card/VideoCard";
+import { format, intervalToDuration } from "date-fns";
 
 const VideoList = () => {
   const { homeVideos } = useContext(YoutubeContext);
 
+  // views
   const viewsConverter = (views) => {
     const abbreviations = ["K", "M", "B", "T"];
 
@@ -17,6 +19,26 @@ const VideoList = () => {
     return `${roundedValue}${abbreviations[exp - 1]}`;
   };
 
+  // Video Title
+  const formateTitle = (title) => {
+    const words = title.split(" ");
+
+    if (words.length < 10) {
+      return title;
+    }
+
+    return `${words.slice(0, 10).join(" ")}...`;
+  };
+
+  // Duration
+  const durationConverter = (Oldseconds) => {
+    const duration = intervalToDuration({ start: 0, end: Oldseconds * 1000 });
+    const hours = duration.hours.toString().padStart(2, "0");
+    const minutes = duration.minutes.toString().padStart(2, "0");
+    const seconds = duration.seconds.toString().padStart(2, "0");
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
   return (
     <>
       <Grid gridTemplateColumns={"1fr 1fr 1fr"} gap={5} padding={"30px"}>
@@ -25,12 +47,13 @@ const VideoList = () => {
             return (
               <VideoCard
                 key={key}
-                title={video.video.title}
+                title={formateTitle(video.video.title)}
                 thumbnail={video?.video.thumbnails[0].url}
-                avatar={video.video.author.avatar[0].url}
+                avatar={video.video.author?.avatar[0]?.url || ""}
                 postTime={video.video.publishedTimeText}
-                views={viewsConverter(video.video.stats.views)}
+                views={viewsConverter(video.video.stats.views || video.video.stats.viewers)}
                 channelName={video.video.author.title}
+                duration={durationConverter(video.video.lengthSeconds)}
               />
             );
           })}
