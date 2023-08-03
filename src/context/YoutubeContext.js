@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
 const YoutubeContext = createContext()
@@ -31,33 +31,7 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
-  // 2. Category videos
-  const loadCategoryVideos = async (category) => {
-    const options = {
-      method: 'GET',
-      url: 'https://youtube-v31.p.rapidapi.com/search',
-      params: {
-        q: category,
-        part: 'snippet,id',
-        regionCode: 'US',
-        maxResults: '50',
-        order: 'date'
-      },
-      headers: {
-        'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
-        'X-RapidAPI-Host': 'youtube-v31.p.rapidapi.com'
-      }
-    };
-
-    try {
-      const response = await axios.request(options);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  // 3. Autocomplete Suggetions
+  // 2. Autocomplete Suggetions
   const generateAutocomplete = async (query) => {
     try {
       const res = await axios.get(`https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&client=firefox&q=${query}`)
@@ -68,13 +42,13 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
-  // 4. Trending Videos
+  // 3. Trending Videos
   const getTrendingVideos = async () => {
     const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5`)
     setTrendingVideos(res.data.items)
   }
 
-  // 5. Search videos
+  // 4. Search videos
   const getSearchVideos = async (query) => {
     const options = {
       method: 'GET',
@@ -102,7 +76,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   return (
-    <YoutubeContext.Provider value={{ homeVideos, categoryVideos, loadCategoryVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage, getSearchVideos, searchVideos }}>
+    <YoutubeContext.Provider value={{ homeVideos, categoryVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage, getSearchVideos, searchVideos }}>
       {children}
     </YoutubeContext.Provider>
   )

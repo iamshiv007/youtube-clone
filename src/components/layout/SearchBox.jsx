@@ -52,7 +52,7 @@ const SearchBox = () => {
   const navigate = useNavigate();
 
   const searchFun = () => {
-    navigate(`/search?query=${searchText}`);
+    navigate(`?query=${searchText}`);
     console.log(searchText);
   };
 
@@ -139,7 +139,7 @@ const AutoSuggestion = ({ autocomplete }) => {
       {autocomplete && autocomplete.length !== 0 && (
         <Box bg="#222222" borderRadius={"10px"} padding={"15px 0"}>
           {autocomplete.map((text) => (
-            <NavLink to={`/search?query=${text}`} key={text}>
+            <NavLink to={`?query=${text}`} key={text}>
               <Text
                 display={"flex"}
                 gap={4}

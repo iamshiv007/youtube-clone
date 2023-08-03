@@ -1,6 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import YouTube from "react-youtube";
+import Header from "../../components/layout/Header";
+import { Box } from "@chakra-ui/react";
 
 const Video = () => {
   const opts = {
@@ -11,12 +13,14 @@ const Video = () => {
     },
   };
 
-
-  const { videoId} = useParams()
+  const { videoId } = useParams();
 
   return (
     <>
-      <YouTube videoId={videoId} opts={opts} />
+      <Header />
+      <Box height={"90vh"} width={"100%"} padding={"30px"} bg="#0f0f0f">
+        <YouTube videoId={videoId} opts={opts} />
+      </Box>
     </>
   );
 };

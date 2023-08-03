@@ -3,15 +3,15 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const SearchVideoCard = ({
+  videoId,
+  title,
   thumbnail,
   duration,
-  title,
   views,
   postTime,
   avatar,
   channelName,
   desc,
-  videoId,
 }) => {
   return (
     <>

@@ -1,7 +1,7 @@
 import { Fragment, useContext, useEffect } from "react";
 import { Grid, Text } from "@chakra-ui/react";
 import React from "react";
-import SearchVideoCard from "../card/SearchVideoCard";
+import SearchVideoCard from "../cards/SearchVideoCard";
 import YoutubeContext from "../../context/YoutubeContext";
 import { useLocation } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
@@ -15,7 +15,7 @@ const SearchVideoList = () => {
     return formatDistanceToNow(date, { addSuffix: true });
   };
 
-  // Convert HTML entity in title
+  // Convert HTML entities in title
   function convertHtmlEntities(inputString) {
     const textarea = document.createElement("textarea");
     textarea.innerHTML = inputString;
@@ -35,21 +35,22 @@ const SearchVideoList = () => {
   return (
     <Fragment>
       <Grid gap={5} padding={"30px"}>
-        {searchVideos.map((video) => {
-          return (
-            <SearchVideoCard
-              videoId={video.id.videoId}
-              key={video.id.videoId}
-              duration={"04:35"}
-              title={convertHtmlEntities(video.snippet.title)}
-              thumbnail={video.snippet.thumbnails.high.url}
-              avatar={""}
-              postTime={timeConverter(video.snippet.publishedAt)}
-              views={""}
-              channelName={video.snippet.channelTitle}
-            />
-          );
-        })}
+        {searchVideos &&
+          searchVideos.map((video) => {
+            return (
+              <SearchVideoCard
+                videoId={video.id.videoId}
+                key={video.id.videoId}
+                duration={"04:35"}
+                title={convertHtmlEntities(video.snippet.title)}
+                thumbnail={video.snippet.thumbnails.high.url}
+                avatar={""}
+                postTime={timeConverter(video.snippet.publishedAt)}
+                views={""}
+                channelName={video.snippet.channelTitle}
+              />
+            );
+          })}
       </Grid>
     </Fragment>
   );

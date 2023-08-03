@@ -1,19 +1,20 @@
-import { Avatar, Box, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
+import { Avatar, Box, Flex, Image, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 
 const VideoCard = ({
+  videoId,
   thumbnail,
   title,
-  avatar,
   postTime,
   views,
-  channelName,
   duration,
+  avatar,
+  channelName,
 }) => {
   return (
     <>
-      <NavLink to="/">
+      <NavLink to={`/video/${videoId}`}>
         <Box>
           <Box
             borderRadius={"8px"}
@@ -60,11 +61,8 @@ const VideoCard = ({
               <Text marginTop={"5px"} fontSize={"xs"}>
                 {channelName}
               </Text>
-              <Text fontSize={"xs"} display={"inline"}>
-                {views ? views + " " + "Views" : ""}
-              </Text>{" "}
-              <Text display={"inline"} fontSize={"xs"}>
-                {postTime}
+              <Text fontSize={"xs"}>
+                {views ? views + "views" : ""} + + {postTime || ""}
               </Text>
             </Box>
           </Flex>
