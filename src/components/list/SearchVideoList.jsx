@@ -1,36 +1,55 @@
-import { Fragment, useContext } from "react";
-import { Grid } from "@chakra-ui/react";
+import { Fragment, useContext, useEffect } from "react";
+import { Grid, Text } from "@chakra-ui/react";
 import React from "react";
 import SearchVideoCard from "../card/SearchVideoCard";
 import YoutubeContext from "../../context/YoutubeContext";
+import { useLocation } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 
 const SearchVideoList = () => {
-  const {} = useContext(YoutubeContext);
+  const { getSearchVideos, searchVideos } = useContext(YoutubeContext);
 
-  const viewsConverter = (views) => {
-    const abbreviations = ["K", "M", "B", "T"];
-
-    if (views < 1000) return views.toString();
-
-    const exp = Math.floor(Math.log(views) / Math.log(1000));
-    const roundedValue = (views / Math.pow(1000, exp)).toFixed(2);
-
-    return `${roundedValue}${abbreviations[exp - 1]}`;
+  // Video Uploaded Time
+  const timeConverter = (time) => {
+    const date = new Date(time);
+    return formatDistanceToNow(date, { addSuffix: true });
   };
+
+  // Convert HTML entity in title
+  function convertHtmlEntities(inputString) {
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = inputString;
+    return textarea.value;
+  }
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  // Access query parameters
+  const query = queryParams.get("query");
+
+  useEffect(() => {
+    getSearchVideos(query);
+  }, [query]);
+
   return (
     <Fragment>
       <Grid gap={5} padding={"30px"}>
-        <SearchVideoCard
-          duration={"04:35"}
-          title={
-            "Jelly Roll &amp; Struggle Jennings - Fall In The Fall (Lyrics)"
-          }
-          thumbnail={"https://i.ytimg.com/vi/LaRDBUv--v4/mqdefault.jpg"}
-          avatar={""}
-          postTime={viewsConverter("2023-07-29T14:30:10Z")}
-          views={""}
-          channelName={"Country Sound"}
-        />
+        {searchVideos.map((video) => {
+          return (
+            <SearchVideoCard
+              videoId={video.id.videoId}
+              key={video.id.videoId}
+              duration={"04:35"}
+              title={convertHtmlEntities(video.snippet.title)}
+              thumbnail={video.snippet.thumbnails.high.url}
+              avatar={""}
+              postTime={timeConverter(video.snippet.publishedAt)}
+              views={""}
+              channelName={video.snippet.channelTitle}
+            />
+          );
+        })}
       </Grid>
     </Fragment>
   );

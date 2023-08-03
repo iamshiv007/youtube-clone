@@ -8,7 +8,7 @@ export default YoutubeContext
 export const ContextProvider = ({ children }) => {
   const [homeVideos, setHomeVideos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
-  const [searchVideos, setSearchVideos] = useState();
+  const [searchVideos, setSearchVideos] = useState([]);
   const [autocomplete, setAutocomplete] = useState([]);
   const [trendingVideos, setTrendingVideos] = useState([]);
   const [country, setCountry] = useState('IN');
@@ -74,9 +74,35 @@ export const ContextProvider = ({ children }) => {
     setTrendingVideos(res.data.items)
   }
 
+  // 5. Search videos
+  const getSearchVideos = async (query) => {
+    const options = {
+      method: 'GET',
+      url: 'https://youtube-v31.p.rapidapi.com/search',
+      params: {
+        q: query,
+        part: 'snippet,id',
+        regionCode: 'US',
+        maxResults: '20',
+        order: 'date'
+      },
+      headers: {
+        'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
+        'X-RapidAPI-Host': 'youtube-v31.p.rapidapi.com'
+      }
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log(response.data);
+      setSearchVideos(response.data.items)
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
-    <YoutubeContext.Provider value={{ homeVideos, categoryVideos, loadCategoryVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage }}>
+    <YoutubeContext.Provider value={{ homeVideos, categoryVideos, loadCategoryVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage, getSearchVideos, searchVideos }}>
       {children}
     </YoutubeContext.Provider>
   )

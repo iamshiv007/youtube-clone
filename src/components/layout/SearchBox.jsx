@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { MdKeyboardVoice } from "react-icons/md";
 import YoutubeContext from "../../context/YoutubeContext";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const SearchBox = () => {
   const { generateAutocomplete, autocomplete } = useContext(YoutubeContext);
@@ -24,13 +24,15 @@ const SearchBox = () => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       generateAutocomplete(query);
-    }, 500);
+    }, 1000);
   };
 
   useEffect(() => {
     const handleMouseDown = (event) => {
+      if (event.target?.parentElement?.tagName === "A") return;
       if (inputRef.current && !inputRef.current.contains(event.target)) {
         setShowSuggestion(false);
+        console.log("36");
       }
     };
 
@@ -38,7 +40,8 @@ const SearchBox = () => {
       if (inputRef.current === event.target) {
         setShowSuggestion(true);
       } else {
-        setShowSuggestion(false);
+        // setShowSuggestion(false);
+        console.log("45");
       }
     };
 
@@ -52,6 +55,12 @@ const SearchBox = () => {
     navigate(`/search?query=${searchText}`);
     console.log(searchText);
   };
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  // Access query parameters
+  const query = queryParams.get("query");
 
   return (
     <>
@@ -80,6 +89,7 @@ const SearchBox = () => {
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
                     searchFun();
+                    setShowSuggestion(false);
                   }
                 }}
               />
@@ -101,7 +111,10 @@ const SearchBox = () => {
             width="460px"
             hidden={!showSuggestion}
           >
-            <AutoSuggestion autocomplete={autocomplete} />
+            <AutoSuggestion
+              setShowSuggestion={setShowSuggestion}
+              autocomplete={autocomplete}
+            />
           </Box>
         </Box>
         <Box>
@@ -126,7 +139,7 @@ const AutoSuggestion = ({ autocomplete }) => {
       {autocomplete && autocomplete.length !== 0 && (
         <Box bg="#222222" borderRadius={"10px"} padding={"15px 0"}>
           {autocomplete.map((text) => (
-            <NavLink to="" key={text}>
+            <NavLink to={`/search?query=${text}`} key={text}>
               <Text
                 display={"flex"}
                 gap={4}
