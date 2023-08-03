@@ -57,8 +57,8 @@ const SearchBox = () => {
               </InputLeftElement>
               <Input
                 ref={inputRef}
-                focusBorderColor="blue.400"
-                borderColor={"gray"}
+                focusBorderColor="#7373ff"
+                borderColor={"#303030"}
                 display={"flex"}
                 alignItems={"center"}
                 color={"white"}
@@ -73,12 +73,12 @@ const SearchBox = () => {
               />
             </InputGroup>
             <IconButton
-              borderColor={"gray"}
+              borderColor={"#303030"}
               borderWidth={"1px 1px 1px 0"}
               borderStyle={"solid"}
               borderRadius={"0 30px 30px 0"}
-              bg={"gray.800"}
-              _hover={{ bg: "gray" }}
+              bg={"#303030"}
+              _hover={{ bg: "#424242" }}
               icon={<BiSearch size={"24px"} color="white" />}
             />
           </Box>
@@ -93,8 +93,8 @@ const SearchBox = () => {
         </Box>
         <Box>
           <IconButton
-            bg={"gray.800"}
-            _hover={{ bg: "gray" }}
+            bg={"#303030"}
+            _hover={{ bg: "#424242" }}
             borderRadius="100%"
             aria-label="Mice"
             icon={<MdKeyboardVoice color="white" size={"24px"} />}

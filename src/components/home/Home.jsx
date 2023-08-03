@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <Fragment>
-      <Box bg={"#0f0f0f"} height={"100vh"} overflow={"hidden"}>
+      <Box bg={"#0f0f0f"}>
         <Header />
 
         <Flex>
@@ -19,7 +19,7 @@ const Home = () => {
             <Sidebar />
           </Box>
 
-          <Box overflowY={"scroll"} height={"90vh"}>
+          <Box>
             <Box width={"95%"} margin={"auto"}>
               {category ? <TrendingList /> : <VideoList />}
             </Box>

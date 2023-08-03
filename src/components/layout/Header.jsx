@@ -10,13 +10,14 @@ const Header = () => {
     <>
       <Box
         borderBottomWidth="1px"
-        borderColor={"gray"}
+        borderColor={"#303030"}
         padding={"8px 35px"}
         height={"10vh"}
         borderStyle={"solid"}
         position={"sticky"}
         top={0}
         zIndex={10}
+        bg={"#0f0f0f"}
       >
         <Flex justifyContent={"space-between"} alignItems={"center"}>
           <NavLink to="/">

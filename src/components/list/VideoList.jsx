@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
 import VideoCard from "../card/VideoCard";
-import { format, intervalToDuration } from "date-fns";
+import { intervalToDuration } from "date-fns";
 
 const VideoList = () => {
   const { homeVideos } = useContext(YoutubeContext);
@@ -11,7 +11,7 @@ const VideoList = () => {
   const viewsConverter = (views) => {
     const abbreviations = ["K", "M", "B", "T"];
 
-    if (views < 1000) return views.toString();
+    if (views < 1000) return views;
 
     const exp = Math.floor(Math.log(views) / Math.log(1000));
     const roundedValue = (views / Math.pow(1000, exp)).toFixed(2);

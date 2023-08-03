@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
 import VideoCard from "../card/VideoCard";
@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
 
 const TrendingList = () => {
-  const { trendingVideos, getTrendingVideos } = useContext(YoutubeContext);
+  const { trendingVideos } = useContext(YoutubeContext);
 
   // Views
   const viewsConverter = (views) => {
@@ -43,10 +43,6 @@ const TrendingList = () => {
     return `${char.slice(0, 60).join("")}...`;
   };
 
-  useEffect(() => {
-    getTrendingVideos();
-  }, []);
-
   return (
     <>
       <Grid gridTemplateColumns={"1fr 1fr 1fr"} gap={5} padding={"30px"}>
@@ -54,10 +50,20 @@ const TrendingList = () => {
           trendingVideos.map((video, key) => {
             return (
               <VideoCard
-                duration={durationConverter(video.contentDetails.duration)}
+                duration={
+                  video.contentDetails?.duration
+                    ? durationConverter(video.contentDetails?.duration)
+                    : ""
+                }
                 key={key}
-                title={formateTitle(video.snippet.title)}
-                thumbnail={video?.snippet.thumbnails.maxres.url}
+                title={
+                  video.snippet?.title ? formateTitle(video.snippet.title) : ""
+                }
+                thumbnail={
+                  video?.snippet.thumbnails?.maxres?.url ||
+                  video?.snippet.thumbnails?.standard?.url ||
+                  ""
+                }
                 avatar={""}
                 postTime={timeConverter(video.snippet.publishedAt)}
                 views={viewsConverter(video.statistics.viewCount)}

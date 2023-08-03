@@ -22,6 +22,8 @@ const VideoCard = ({
             height={"180px"}
             backgroundImage={thumbnail}
             backgroundSize={"cover"}
+            backgroundColor="#2e2c2c"
+            backgroundPosition={"center"}
           >
             <Text
               position={"absolute"}
