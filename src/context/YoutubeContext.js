@@ -8,16 +8,17 @@ export default YoutubeContext
 export const ContextProvider = ({ children }) => {
   const [homeVideos, setHomeVideos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
+  const [searchVideos, setSearchVideos] = useState();
   const [autocomplete, setAutocomplete] = useState([]);
   const [trendingVideos, setTrendingVideos] = useState([]);
   const [country, setCountry] = useState('IN');
   const [language, setLanguage] = useState('hi');
 
-  useEffect(() => {
-    loadHomeVideos()
-    getTrendingVideos();
+  // useEffect(() => {
+  //   loadHomeVideos()
+  //   getTrendingVideos();
 
-  }, [country, language]);
+  // }, [country, language]);
 
   // 1. Home Videos
   const loadHomeVideos = async () => {

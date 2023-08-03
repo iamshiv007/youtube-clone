@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { MdKeyboardVoice } from "react-icons/md";
 import YoutubeContext from "../../context/YoutubeContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const SearchBox = () => {
   const { generateAutocomplete, autocomplete } = useContext(YoutubeContext);
@@ -46,6 +46,13 @@ const SearchBox = () => {
     window.addEventListener("focusin", handleFocusIn);
   });
 
+  const navigate = useNavigate();
+
+  const searchFun = () => {
+    navigate(`/search?query=${searchText}`);
+    console.log(searchText);
+  };
+
   return (
     <>
       <Box display={"flex"} alignItems={"center"} gap={6}>
@@ -70,6 +77,11 @@ const SearchBox = () => {
                   setSearchText(e.target.value);
                   generateAutocompleteFun(e.target.value);
                 }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    searchFun();
+                  }
+                }}
               />
             </InputGroup>
             <IconButton
@@ -80,6 +92,7 @@ const SearchBox = () => {
               bg={"#303030"}
               _hover={{ bg: "#424242" }}
               icon={<BiSearch size={"24px"} color="white" />}
+              onClick={searchFun}
             />
           </Box>
           <Box

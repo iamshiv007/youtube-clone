@@ -2,13 +2,9 @@ import React, { Fragment } from "react";
 import Sidebar from "../layout/Sidebar";
 import Header from "../layout/Header";
 import { Box, Flex } from "@chakra-ui/react";
-import VideoList from "../list/VideoList";
-import { useParams } from "react-router-dom";
-import TrendingList from "../list/TrendingList";
+import SearchVideoList from "../list/SearchVideoList";
 
-const Home = () => {
-  const { category } = useParams();
-
+const Search = () => {
   return (
     <Fragment>
       <Box bg={"#0f0f0f"}>
@@ -21,7 +17,7 @@ const Home = () => {
 
           <Box>
             <Box width={"95%"} margin={"auto"}>
-              {category ? <TrendingList /> : <VideoList />}
+              <SearchVideoList />
             </Box>
           </Box>
         </Flex>
@@ -30,4 +26,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Search;
