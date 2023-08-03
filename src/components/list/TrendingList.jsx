@@ -1,12 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
 import VideoCard from "../card/VideoCard";
 import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
+import axios from "axios";
 
 const TrendingList = () => {
-  const { trendingVideos } = useContext(YoutubeContext);
+  const { trendingVideos, setTrendingVideos, country } =
+    useContext(YoutubeContext);
+  const [nextPageToken, setNextPageToken] = useState("");
 
   // Views
   const viewsConverter = (views) => {
@@ -41,6 +44,53 @@ const TrendingList = () => {
     }
 
     return `${char.slice(0, 60).join("")}...`;
+  };
+
+  const nextPageTokenRef = useRef(nextPageToken);
+
+  useEffect(() => {
+    nextPageTokenRef.current = nextPageToken; // Update the ref when nextPageToken changes
+  }, [nextPageToken]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight
+      ) {
+        return;
+      }
+      fetchMoreData(nextPageToken);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  // Trending videos Scrolling
+  const fetchMoreData = async () => {
+    try {
+      const res = await axios.get(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${nextPageTokenRef.current}`
+      );
+
+      const newNextPageToken = res.data.nextPageToken;
+
+      const res2 = await axios.get(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${newNextPageToken}`
+      );
+      setTrendingVideos((prevTrendingVideos) => [
+        ...prevTrendingVideos,
+        ...res2.data.items,
+      ]);
+
+      setNextPageToken(() => newNextPageToken);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

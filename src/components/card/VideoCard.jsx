@@ -61,7 +61,7 @@ const VideoCard = ({
                 {channelName}
               </Text>
               <Text fontSize={"xs"} display={"inline"}>
-                {views} views
+                {views ? views + " " + "Views" : ""}
               </Text>{" "}
               <Text display={"inline"} fontSize={"xs"}>
                 {postTime}

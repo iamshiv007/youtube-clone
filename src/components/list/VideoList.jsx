@@ -1,22 +1,30 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
 import VideoCard from "../card/VideoCard";
-import { intervalToDuration } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
+import axios from "axios";
 
 const VideoList = () => {
-  const { homeVideos } = useContext(YoutubeContext);
+  const { homeVideos, setHomeVideos, country, language } =
+    useContext(YoutubeContext);
+  const [nextPageToken, setNextPageToken] = useState("");
 
-  // views
-  const viewsConverter = (views) => {
-    const abbreviations = ["K", "M", "B", "T"];
+  // Video Duration
+  const durationConverter = (duration) => {
+    const matches = duration.match(/PT(\d+)M(\d+)S/);
+    if (!matches) return "";
 
-    if (views < 1000) return views;
+    const minutes = parseInt(matches[1]);
+    const seconds = parseInt(matches[2]);
 
-    const exp = Math.floor(Math.log(views) / Math.log(1000));
-    const roundedValue = (views / Math.pow(1000, exp)).toFixed(2);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
 
-    return `${roundedValue}${abbreviations[exp - 1]}`;
+  // Video Uploaded
+  const timeConverter = (time) => {
+    const date = new Date(time);
+    return formatDistanceToNow(date, { addSuffix: true });
   };
 
   // Video Title
@@ -30,13 +38,51 @@ const VideoList = () => {
     return `${char.slice(0, 60).join("")}...`;
   };
 
-  // Duration
-  const durationConverter = (Oldseconds) => {
-    const duration = intervalToDuration({ start: 0, end: Oldseconds * 1000 });
-    const hours = duration.hours.toString().padStart(2, "0");
-    const minutes = duration.minutes.toString().padStart(2, "0");
-    const seconds = duration.seconds.toString().padStart(2, "0");
-    return `${hours}:${minutes}:${seconds}`;
+  const nextPageTokenRef = useRef(nextPageToken);
+
+  useEffect(() => {
+    nextPageTokenRef.current = nextPageToken; // Update the ref when nextPageToken changes
+  }, [nextPageToken]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight
+      ) {
+        return;
+      }
+      fetchMoreData(nextPageToken);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  // Home Videos Scrolling
+  const fetchMoreData = async () => {
+    try {
+      const res = await axios.get(
+        `https://www.googleapis.com/youtube/v3/search?key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&part=snippet&maxResults=5&regionCode=${country}&relevanceLanguage=${language}&type=video&pageToken=${nextPageTokenRef.current}`
+      );
+
+      const newNextPageToken = res.data.nextPageToken;
+
+      const res2 = await axios.get(
+        `https://www.googleapis.com/youtube/v3/search?key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&part=snippet&maxResults=5&regionCode=${country}&relevanceLanguage=${language}&type=video&pageToken=${newNextPageToken}`
+      );
+      setHomeVideos((prevHomeVideos) => [
+        ...prevHomeVideos,
+        ...res2.data.items,
+      ]);
+
+      setNextPageToken(() => newNextPageToken);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -46,16 +92,24 @@ const VideoList = () => {
           homeVideos.map((video, key) => {
             return (
               <VideoCard
+                duration={
+                  video.contentDetails?.duration
+                    ? durationConverter(video.contentDetails?.duration)
+                    : ""
+                }
                 key={key}
-                title={formateTitle(video.video.title)}
-                thumbnail={video?.video.thumbnails[0].url}
-                avatar={video.video.author?.avatar[0]?.url || ""}
-                postTime={video.video.publishedTimeText}
-                views={viewsConverter(
-                  video.video.stats.views || video.video.stats.viewers
-                )}
-                channelName={video.video.author.title}
-                duration={durationConverter(video.video.lengthSeconds)}
+                title={
+                  video.snippet?.title ? formateTitle(video.snippet.title) : ""
+                }
+                thumbnail={
+                  video?.snippet.thumbnails?.high?.url ||
+                  video?.snippet.thumbnails?.medium?.url ||
+                  ""
+                }
+                avatar={""}
+                postTime={timeConverter(video.snippet.publishedAt)}
+                views={""}
+                channelName={video.snippet.channelTitle}
               />
             );
           })}
