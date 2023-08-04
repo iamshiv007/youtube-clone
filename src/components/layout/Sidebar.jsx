@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { sidebarData } from "../constants/sidebarData";
+import { sidebarData } from "../constants/Constants";
 
 const Sidebar = () => {
   return (

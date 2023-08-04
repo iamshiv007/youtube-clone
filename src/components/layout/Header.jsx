@@ -1,11 +1,30 @@
-import { Avatar, Box, Flex, Image, Text } from "@chakra-ui/react";
-import React from "react";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Portal,
+  Text,
+} from "@chakra-ui/react";
+import React, { useContext, useState } from "react";
 import Logo from "../../images/Logo.png";
 import { NavLink } from "react-router-dom";
 import SearchBox from "./SearchBox";
 import { BsBell, BsCameraVideo } from "react-icons/bs";
+import { countries } from "../constants/Constants";
+import YoutubeContext from "../../context/YoutubeContext";
 
 const Header = () => {
+  const { setCountry } = useContext(YoutubeContext);
+
+  const [flag, setFlag] = useState(
+    "https://t4.ftcdn.net/jpg/02/81/47/57/240_F_281475718_rlQONmoS2E3CJtv0zFv2HwZ1weGhxpff.jpg"
+  );
+
   return (
     <>
       <Box
@@ -38,11 +57,29 @@ const Header = () => {
             <Text fontSize={"xl"} color={"white"}>
               <BsBell />
             </Text>
-            <Avatar
-              size={"xs"}
-              name="Shivraj Gurjar"
-              src="https://bit.ly/tioluwani-kolawole"
-            />
+            <Menu>
+              <MenuButton>
+                <Avatar size={"xs"} name="Coutry" src={flag} />
+              </MenuButton>
+              <Portal>
+                <MenuList bg={"#323232"} marginTop={"20px"}>
+                  {countries.map((country) => (
+                    <MenuItem
+                      bg={"#323232"}
+                      _hover={{ bg: "#5b5b5b" }}
+                      color={"white"}
+                      onClick={() => {
+                        setFlag(country.url);
+                        setCountry(country.countryCode);
+                      }}
+                      key={country.name}
+                    >
+                      {country.name}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </Portal>
+            </Menu>
           </Box>
         </Flex>
       </Box>

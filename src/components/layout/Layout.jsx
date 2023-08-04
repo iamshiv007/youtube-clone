@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
         <Header />
 
         <Flex>
-          <Box flexShrink={0} width={"230px"}>
+          <Box flexShrink={0} width={"280px"}>
             <Box
               position={"fixed"}
               top={"10vh"}

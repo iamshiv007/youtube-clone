@@ -1,13 +1,20 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
-import VideoCard from "../cards/HomeVideoCard";
+import HomeVideoCard from "../cards/HomeVideoCard";
 import axios from "axios";
 import HomeSkeleton from "../layout/HomeSkeleton";
+import { formatDistanceToNow } from "date-fns";
 
 const VideoList = () => {
-  const { setHomeVideos, setIsLoading, isLoading, homeVideos, getHomeVideos } =
-    useContext(YoutubeContext);
+  const {
+    setHomeVideos,
+    setIsLoading,
+    isLoading,
+    homeVideos,
+    getHomeVideos,
+    country,
+  } = useContext(YoutubeContext);
   const [nextPageToken, setNextPageToken] = useState();
 
   const nextPageTokenRef = useRef(nextPageToken);
@@ -76,8 +83,8 @@ const VideoList = () => {
   };
 
   useEffect(() => {
-    // getHomeVideos();
-  }, []);
+    getHomeVideos();
+  }, [country]);
 
   return (
     <>
@@ -90,23 +97,38 @@ const VideoList = () => {
         {homeVideos &&
           homeVideos.map((video) => {
             return (
-              <VideoCard
-                key={video.video.videoId}
-                videoId={video.video.videoId}
+              <HomeVideoCard
+                key={video.video?.videoId || video.id?.videoId}
+                videoId={video.video?.videoId || video.id?.videoId}
                 title={
-                  video.video?.title ? formateTitle(video.video?.title) : ""
+                  video.video?.title
+                    ? formateTitle(video.video?.title)
+                    : "" || formateTitle(video.snippet?.title) || ""
                 }
-                thumbnail={video?.video.thumbnails[0].url}
-                avatar={video.video.author?.avatar[0]?.url || ""}
-                postTime={video.video.publishedTimeText}
-                views={
-                  video.video.stats.views
-                    ? viewsConverter(
-                        video.video.stats.views || video.video.stats.viewers
-                      )
+                thumbnail={
+                  video?.video?.thumbnails[0].url ||
+                  video.snippet?.thumbnails.high.url ||
+                  video.snippet?.thumbnails.medium.url ||
+                  ""
+                }
+                avatar={video.video?.author?.avatar[0]?.url || ""}
+                postTime={
+                  video.video?.publishedTimeText || video.snippet?.publishedAt
+                    ? timeConverter(video.snippet?.publishedAt)
                     : ""
                 }
-                channelName={video.video?.author?.title || ""}
+                views={
+                  video.video?.stats.views
+                    ? viewsConverter(
+                        video.video?.stats?.views || video.video?.stats?.viewers
+                      )
+                    : "" || ""
+                }
+                channelName={
+                  video.video?.author?.title ||
+                  video.snippet?.channelTitle ||
+                  ""
+                }
               />
             );
           })}
@@ -158,4 +180,10 @@ const viewsConverter = (views) => {
   const roundedValue = (views / Math.pow(1000, exp)).toFixed(2);
 
   return `${roundedValue}${abbreviations[exp - 1]}`;
+};
+
+// Video Uploaded
+const timeConverter = (time) => {
+  const date = new Date(time);
+  return formatDistanceToNow(date, { addSuffix: true });
 };

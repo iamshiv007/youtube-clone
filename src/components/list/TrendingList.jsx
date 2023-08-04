@@ -29,9 +29,9 @@ const TrendingList = () => {
       const scrollHeight = document.documentElement.scrollHeight;
       const windowHeight = window.innerHeight;
       const scrollTop = document.documentElement.scrollTop;
-      
+
       if (scrollHeight - (scrollTop + windowHeight) <= 500) {
-        // fetchMoreData(nextPageToken);
+        fetchMoreData(nextPageToken);
       }
     };
 
@@ -43,8 +43,8 @@ const TrendingList = () => {
   }, []);
 
   useEffect(() => {
-    // getTrendingVideos();
-  }, []);
+    getTrendingVideos();
+  }, [country]);
 
   // Trending videos Scrolling
   const fetchMoreData = async () => {
@@ -130,7 +130,6 @@ const viewsConverter = (views) => {
 
 // Video Duration
 const durationConverter = (duration) => {
-  
   const matches = duration.match(/PT(?:(\d+)M)?(\d+)S/);
   if (!matches) return "";
 

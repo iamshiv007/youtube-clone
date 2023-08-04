@@ -33,7 +33,30 @@ export const ContextProvider = ({ children }) => {
       setIsLoading(false)
       setHomeVideos(response.data.contents)
     } catch (error) {
-      console.error(error);
+
+      const options = {
+        method: 'GET',
+        url: 'https://youtube-v31.p.rapidapi.com/search',
+        params: {
+          regionCode: country,
+          part: 'id,snippet',
+          type: 'video',
+          maxResults: '50',
+          videoDuration: 'medium'
+        },
+        headers: {
+          'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
+          'X-RapidAPI-Host': 'youtube-v31.p.rapidapi.com'
+        }
+      };
+
+      try {
+        const response = await axios.request(options);
+        setHomeVideos(response.data.items)
+        setIsLoading(false)
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -65,8 +88,8 @@ export const ContextProvider = ({ children }) => {
       params: {
         q: query,
         part: 'snippet,id',
-        regionCode: 'IN',
-        maxResults: '50',
+        regionCode: country,
+        maxResults: '50'
       },
       headers: {
         'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',

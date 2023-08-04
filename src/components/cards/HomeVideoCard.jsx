@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, Box, Flex, Image, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 
-const VideoCard = ({
+const HomeVideoCard = ({
   videoId,
   thumbnail,
   title,
@@ -72,4 +72,4 @@ const VideoCard = ({
   );
 };
 
-export default VideoCard;
+export default HomeVideoCard;
