@@ -1,14 +1,21 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
-import VideoCard from "../cards/HomeVideoCard";
 import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
 import axios from "axios";
+import SearchVideoCard from "../cards/SearchVideoCard";
+import SearchSkeleton from "../layout/SearchSkeleton";
 
 const TrendingList = () => {
-  const { trendingVideos, setTrendingVideos, country } =
-    useContext(YoutubeContext);
+  const {
+    trendingVideos,
+    setTrendingVideos,
+    country,
+    getTrendingVideos,
+    setIsLoading,
+    isLoading,
+  } = useContext(YoutubeContext);
   const [nextPageToken, setNextPageToken] = useState("");
 
   const nextPageTokenRef = useRef(nextPageToken);
@@ -19,13 +26,13 @@ const TrendingList = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight
-      ) {
-        return;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const windowHeight = window.innerHeight;
+      const scrollTop = document.documentElement.scrollTop;
+      
+      if (scrollHeight - (scrollTop + windowHeight) <= 500) {
+        fetchMoreData(nextPageToken);
       }
-      fetchMoreData(nextPageToken);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -35,9 +42,14 @@ const TrendingList = () => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    getTrendingVideos();
+  }, []);
+
   // Trending videos Scrolling
   const fetchMoreData = async () => {
     try {
+      setIsLoading(true);
       const res = await axios.get(
         `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${nextPageTokenRef.current}`
       );
@@ -51,6 +63,7 @@ const TrendingList = () => {
         ...prevTrendingVideos,
         ...res2.data.items,
       ]);
+      setIsLoading(false);
 
       setNextPageToken(() => newNextPageToken);
     } catch (error) {
@@ -60,17 +73,18 @@ const TrendingList = () => {
 
   return (
     <>
-      <Grid gridTemplateColumns={"1fr 1fr 1fr"} gap={5} padding={"30px"}>
+      <Grid gap={5} padding={"30px"}>
         {trendingVideos &&
-          trendingVideos.map((video, key) => {
+          trendingVideos.map((video) => {
             return (
-              <VideoCard
+              <SearchVideoCard
                 duration={
                   video.contentDetails?.duration
                     ? durationConverter(video.contentDetails?.duration)
                     : ""
                 }
-                key={key}
+                key={video.id}
+                videoId={video.id}
                 title={
                   video.snippet?.title ? formateTitle(video.snippet.title) : ""
                 }
@@ -86,6 +100,20 @@ const TrendingList = () => {
               />
             );
           })}
+
+        <SearchSkeleton />
+        <SearchSkeleton />
+        <SearchSkeleton />
+
+        {isLoading ? (
+          <>
+            <SearchSkeleton />
+            <SearchSkeleton />
+            <SearchSkeleton />
+          </>
+        ) : (
+          ""
+        )}
       </Grid>
     </>
   );
@@ -102,11 +130,12 @@ const viewsConverter = (views) => {
 
 // Video Duration
 const durationConverter = (duration) => {
-  const matches = duration.match(/PT(\d+)M(\d+)S/);
+  
+  const matches = duration.match(/PT(?:(\d+)M)?(\d+)S/);
   if (!matches) return "";
 
-  const minutes = parseInt(matches[1]);
-  const seconds = parseInt(matches[2]);
+  const minutes = parseInt(matches[1]) || 0;
+  const seconds = parseInt(matches[2]) || 0;
 
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };
@@ -121,9 +150,9 @@ const timeConverter = (time) => {
 const formateTitle = (title) => {
   const char = title.split("");
 
-  if (char.length < 60) {
+  if (char.length < 100) {
     return title;
   }
 
-  return `${char.slice(0, 60).join("")}...`;
+  return `${char.slice(0, 100).join("")}...`;
 };

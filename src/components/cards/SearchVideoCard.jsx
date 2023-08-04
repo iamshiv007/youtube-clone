@@ -42,12 +42,12 @@ const SearchVideoCard = ({
               borderRadius={"5px"}
               position={"absolute"}
             >
-              {duration}
+              {duration || "0:00"}
             </Text>
           </Box>
 
           <Box width="70%">
-            <Text fontSize={"2xl"} color={"white"}>
+            <Text fontSize={"22px"} color={"white"}>
               {title}
             </Text>
             <Text marginTop={"5px"} color={"#b7b5b5"} fontSize={"sm"}>

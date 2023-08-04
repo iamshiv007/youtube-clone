@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
 import VideoCard from "../cards/HomeVideoCard";
-import { formatDistanceToNow } from "date-fns";
 import axios from "axios";
+import HomeSkeleton from "../layout/HomeSkeleton";
 
 const VideoList = () => {
-  const { homeVideos, setHomeVideos, country, language } =
+  const { setHomeVideos, setIsLoading, isLoading, homeVideos, getHomeVideos } =
     useContext(YoutubeContext);
-    
-  const [nextPageToken, setNextPageToken] = useState("");
+  const [nextPageToken, setNextPageToken] = useState();
 
   const nextPageTokenRef = useRef(nextPageToken);
 
@@ -19,13 +18,13 @@ const VideoList = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight
-      ) {
-        return;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const windowHeight = window.innerHeight;
+      const scrollTop = document.documentElement.scrollTop;
+
+      if (scrollHeight - (scrollTop + windowHeight) <= 500) {
+        fetchMoreData(nextPageToken);
       }
-      fetchMoreData(nextPageToken);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -38,19 +37,37 @@ const VideoList = () => {
   // Home Videos Scrolling
   const fetchMoreData = async () => {
     try {
-      const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/search?key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&part=snippet&maxResults=5&regionCode=${country}&relevanceLanguage=${language}&type=video&pageToken=${nextPageTokenRef.current}`
-      );
+      const options1 = {
+        method: "GET",
+        url: "https://youtube138.p.rapidapi.com/home/",
+        params: { hl: "hi", gl: "IN", cursor: nextPageTokenRef.current },
+        headers: {
+          "X-RapidAPI-Key":
+            "46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004",
+          "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
+        },
+      };
 
-      const newNextPageToken = res.data.nextPageToken;
+      const res = await axios.request(options1);
 
-      const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/search?key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&part=snippet&maxResults=5&regionCode=${country}&relevanceLanguage=${language}&type=video&pageToken=${newNextPageToken}`
-      );
+      const newNextPageToken = res.data.cursorNext;
+
+      const options2 = {
+        method: "GET",
+        url: "https://youtube138.p.rapidapi.com/home/",
+        params: { hl: "hi", gl: "IN", cursor: newNextPageToken },
+        headers: {
+          "X-RapidAPI-Key":
+            "46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004",
+          "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
+        },
+      };
+      const res2 = await axios.request(options2);
       setHomeVideos((prevHomeVideos) => [
         ...prevHomeVideos,
-        ...res2.data.items,
+        ...res2.data.contents,
       ]);
+      setIsLoading(false);
 
       setNextPageToken(() => newNextPageToken);
     } catch (error) {
@@ -58,57 +75,67 @@ const VideoList = () => {
     }
   };
 
+  useEffect(() => {
+    getHomeVideos();
+  }, []);
+
   return (
     <>
-      <Grid gridTemplateColumns={"1fr 1fr 1fr"} gap={5} padding={"30px"}>
+      <Grid
+        gridTemplateColumns={"1fr 1fr 1fr"}
+        gap={5}
+        width="100%"
+        padding={"30px"}
+      >
         {homeVideos &&
-          homeVideos.map((video, key) => {
+          homeVideos.map((video) => {
             return (
               <VideoCard
-                duration={
-                  video.contentDetails?.duration
-                    ? durationConverter(video.contentDetails?.duration)
+                key={video.video.videoId}
+                videoId={video.video.videoId}
+                title={
+                  video.video?.title ? formateTitle(video.video?.title) : ""
+                }
+                thumbnail={video?.video.thumbnails[0].url}
+                avatar={video.video.author?.avatar[0]?.url || ""}
+                postTime={video.video.publishedTimeText}
+                views={
+                  video.video.stats.views
+                    ? viewsConverter(
+                        video.video.stats.views || video.video.stats.viewers
+                      )
                     : ""
                 }
-                key={key}
-                title={
-                  video.snippet?.title ? formateTitle(video.snippet.title) : ""
-                }
-                thumbnail={
-                  video?.snippet.thumbnails?.high?.url ||
-                  video?.snippet.thumbnails?.medium?.url ||
-                  ""
-                }
-                avatar={""}
-                postTime={timeConverter(video.snippet.publishedAt)}
-                views={""}
-                channelName={video.snippet.channelTitle}
+                channelName={video.video?.author?.title || ""}
               />
             );
           })}
+        <HomeSkeleton />
+        <HomeSkeleton />
+        <HomeSkeleton />
+        <HomeSkeleton />
+        <HomeSkeleton />
+        <HomeSkeleton />
+        {isLoading ? (
+          <>
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+          </>
+        ) : (
+          ""
+        )}
       </Grid>
     </>
   );
 };
 
 export default VideoList;
-
-// Video Duration
-const durationConverter = (duration) => {
-  const matches = duration.match(/PT(\d+)M(\d+)S/);
-  if (!matches) return "";
-
-  const minutes = parseInt(matches[1]);
-  const seconds = parseInt(matches[2]);
-
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-};
-
-// Video Uploaded
-const timeConverter = (time) => {
-  const date = new Date(time);
-  return formatDistanceToNow(date, { addSuffix: true });
-};
 
 // Video Title
 const formateTitle = (title) => {
@@ -119,4 +146,16 @@ const formateTitle = (title) => {
   }
 
   return `${char.slice(0, 60).join("")}...`;
+};
+
+// Views
+const viewsConverter = (views) => {
+  const abbreviations = ["K", "M", "B", "T"];
+
+  if (views < 1000) return views.toString();
+
+  const exp = Math.floor(Math.log(views) / Math.log(1000));
+  const roundedValue = (views / Math.pow(1000, exp)).toFixed(2);
+
+  return `${roundedValue}${abbreviations[exp - 1]}`;
 };

@@ -10,12 +10,19 @@ const Layout = ({ children }) => {
         <Header />
 
         <Flex>
-          <Box minWidth={"fit-content"} width="15%">
-            <Sidebar />
+          <Box flexShrink={0} width={"230px"}>
+            <Box
+              position={"fixed"}
+              top={"10vh"}
+              left={"0"}
+              minWidth={"fit-content"}
+            >
+              <Sidebar />
+            </Box>
           </Box>
 
           <Box>
-            <Box width={"95%"} margin={"auto"}>
+            <Box minHeight={"90vh"} width={"100%"} margin={"auto"}>
               {children}
             </Box>
           </Box>

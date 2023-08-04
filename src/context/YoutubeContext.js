@@ -13,21 +13,38 @@ export const ContextProvider = ({ children }) => {
   const [trendingVideos, setTrendingVideos] = useState([]);
   const [country, setCountry] = useState('IN');
   const [language, setLanguage] = useState('hi');
+  const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   loadHomeVideos()
-  //   getTrendingVideos();
+  // // 1. Home Videos
+  // const getHomeVideos = async () => {
+  //   try {
+  //     const res = await axios.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&part=snippet&maxResults=8&regionCode=${country}&relevanceLanguage=${language}&type=video`)
+  //     setHomeVideos(res.data.items)
 
-  // }, [country, language]);
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
-  // 1. Home Videos
-  const loadHomeVideos = async () => {
+  const getHomeVideos = async () => {
+    setIsLoading(true)
+    const options = {
+      method: 'GET',
+      url: 'https://youtube138.p.rapidapi.com/home/',
+      params: { hl: 'hi', gl: 'IN' },
+      headers: {
+        'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
+        'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
+      }
+    };
+
     try {
-      const res = await axios.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&part=snippet&maxResults=5&regionCode=${country}&relevanceLanguage=${language}&type=video`)
-      setHomeVideos(res.data.items)
-
+      const response = await axios.request(options);
+      console.log(response.data);
+      setIsLoading(false)
+      setHomeVideos(response.data.contents)
     } catch (error) {
-      console.log(error)
+      console.error(error);
     }
   }
 
@@ -44,8 +61,10 @@ export const ContextProvider = ({ children }) => {
 
   // 3. Trending Videos
   const getTrendingVideos = async () => {
+    setIsLoading(true)
     const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5`)
     setTrendingVideos(res.data.items)
+    setIsLoading(false)
   }
 
   // 4. Search videos
@@ -76,7 +95,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   return (
-    <YoutubeContext.Provider value={{ homeVideos, categoryVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage, getSearchVideos, searchVideos }}>
+    <YoutubeContext.Provider value={{ isLoading, homeVideos, categoryVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage, getSearchVideos, searchVideos, setIsLoading, getHomeVideos, getTrendingVideos }}>
       {children}
     </YoutubeContext.Provider>
   )

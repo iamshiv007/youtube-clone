@@ -7,7 +7,8 @@ import { useLocation } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
 const SearchVideoList = () => {
-  const { getSearchVideos, searchVideos } = useContext(YoutubeContext);
+  const { getSearchVideos, searchVideos } =
+    useContext(YoutubeContext);
 
   // Video Uploaded Time
   const timeConverter = (time) => {
