@@ -13,6 +13,8 @@ const Home = () => {
   const query = queryParams.get("query");
   const category = queryParams.get("category");
 
+  window.scrollTo(0, 0);
+
   if (category) {
     return (
       <Layout>

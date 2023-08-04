@@ -31,7 +31,7 @@ const TrendingList = () => {
       const scrollTop = document.documentElement.scrollTop;
       
       if (scrollHeight - (scrollTop + windowHeight) <= 500) {
-        fetchMoreData(nextPageToken);
+        // fetchMoreData(nextPageToken);
       }
     };
 
@@ -43,7 +43,7 @@ const TrendingList = () => {
   }, []);
 
   useEffect(() => {
-    getTrendingVideos();
+    // getTrendingVideos();
   }, []);
 
   // Trending videos Scrolling

@@ -10,7 +10,7 @@ export const sidebarData = [
   { name: "Home", icon: <AiFillHome /> },
   { name: "Trending", icon: <AiTwotoneFire /> },
   { name: "JavaScript", icon: <RiJavascriptFill /> },
-  { name: "React", icon: <DiReact /> },
+  { name: "React JS", icon: <DiReact /> },
   { name: "Comedy", icon: <FaRegLaughSquint /> },
   { name: "Songs", icon: <GiLoveSong /> },
   { name: "Learning", icon: <BiSolidBookReader /> },

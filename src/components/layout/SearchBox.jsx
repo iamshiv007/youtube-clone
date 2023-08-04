@@ -49,18 +49,23 @@ const SearchBox = () => {
     window.addEventListener("focusin", handleFocusIn);
   });
 
-  const navigate = useNavigate();
-
-  const searchFun = () => {
-    navigate(`?query=${searchText}`);
-    console.log(searchText);
-  };
-
+  // Access query parameters
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  // Access query parameters
   const query = queryParams.get("query");
+
+  useEffect(() => {
+    setSearchText(query);
+    setShowSuggestion(false);
+  }, [query]);
+
+  const navigate = useNavigate();
+
+  const searchFun = () => {
+    navigate(`/?query=${searchText}`);
+    console.log(searchText);
+  };
 
   return (
     <>
@@ -139,7 +144,7 @@ const AutoSuggestion = ({ autocomplete }) => {
       {autocomplete && autocomplete.length !== 0 && (
         <Box bg="#222222" borderRadius={"10px"} padding={"15px 0"}>
           {autocomplete.map((text) => (
-            <NavLink to={`?query=${text}`} key={text}>
+            <NavLink to={`/?query=${text}`} key={text}>
               <Text
                 display={"flex"}
                 gap={4}

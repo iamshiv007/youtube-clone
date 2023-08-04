@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import YouTube from "react-youtube";
 import Header from "../../components/layout/Header";
 import { Box } from "@chakra-ui/react";

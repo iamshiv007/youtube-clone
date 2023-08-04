@@ -1,13 +1,14 @@
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Grid, Text } from "@chakra-ui/react";
 import React from "react";
 import SearchVideoCard from "../cards/SearchVideoCard";
 import YoutubeContext from "../../context/YoutubeContext";
 import { useLocation } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
+import SearchSkeleton from "../layout/SearchSkeleton";
 
 const SearchVideoList = () => {
-  const { getSearchVideos, searchVideos } =
+  const { getSearchVideos, searchVideos, isLoading } =
     useContext(YoutubeContext);
 
   // Video Uploaded Time
@@ -38,7 +39,13 @@ const SearchVideoList = () => {
       <Grid gap={5} padding={"30px"}>
         {searchVideos &&
           searchVideos.map((video) => {
-            return (
+            return isLoading ? (
+              <>
+                <SearchSkeleton />
+                <SearchSkeleton />
+                <SearchSkeleton />{" "}
+              </>
+            ) : (
               <SearchVideoCard
                 videoId={video.id.videoId}
                 key={video.id.videoId}

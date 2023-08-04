@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import axios from "axios";
 
 const YoutubeContext = createContext()
@@ -7,7 +7,6 @@ export default YoutubeContext
 
 export const ContextProvider = ({ children }) => {
   const [homeVideos, setHomeVideos] = useState([]);
-  const [categoryVideos, setCategoryVideos] = useState([]);
   const [searchVideos, setSearchVideos] = useState([]);
   const [autocomplete, setAutocomplete] = useState([]);
   const [trendingVideos, setTrendingVideos] = useState([]);
@@ -16,16 +15,6 @@ export const ContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // // 1. Home Videos
-  // const getHomeVideos = async () => {
-  //   try {
-  //     const res = await axios.get(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&part=snippet&maxResults=8&regionCode=${country}&relevanceLanguage=${language}&type=video`)
-  //     setHomeVideos(res.data.items)
-
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
   const getHomeVideos = async () => {
     setIsLoading(true)
     const options = {
@@ -69,15 +58,15 @@ export const ContextProvider = ({ children }) => {
 
   // 4. Search videos
   const getSearchVideos = async (query) => {
+    setIsLoading(true)
     const options = {
       method: 'GET',
       url: 'https://youtube-v31.p.rapidapi.com/search',
       params: {
         q: query,
         part: 'snippet,id',
-        regionCode: 'US',
-        maxResults: '20',
-        order: 'date'
+        regionCode: 'IN',
+        maxResults: '50',
       },
       headers: {
         'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
@@ -88,6 +77,7 @@ export const ContextProvider = ({ children }) => {
     try {
       const response = await axios.request(options);
       console.log(response.data);
+      setIsLoading(false)
       setSearchVideos(response.data.items)
     } catch (error) {
       console.error(error);
@@ -95,7 +85,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   return (
-    <YoutubeContext.Provider value={{ isLoading, homeVideos, categoryVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage, getSearchVideos, searchVideos, setIsLoading, getHomeVideos, getTrendingVideos }}>
+    <YoutubeContext.Provider value={{ isLoading, homeVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage, getSearchVideos, searchVideos, setIsLoading, getHomeVideos, getTrendingVideos }}>
       {children}
     </YoutubeContext.Provider>
   )

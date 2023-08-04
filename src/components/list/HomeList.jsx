@@ -76,7 +76,7 @@ const VideoList = () => {
   };
 
   useEffect(() => {
-    getHomeVideos();
+    // getHomeVideos();
   }, []);
 
   return (
