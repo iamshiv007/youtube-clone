@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
 import axios from "axios";
+
+import YoutubeContext from "../../context/YoutubeContext";
 import SearchVideoCard from "../cards/SearchVideoCard";
 import SearchSkeleton from "../layout/SearchSkeleton";
 
@@ -26,9 +27,9 @@ const TrendingList = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight;
+      const {scrollHeight} = document.documentElement;
       const windowHeight = window.innerHeight;
-      const scrollTop = document.documentElement.scrollTop;
+      const {scrollTop} = document.documentElement;
 
       if (scrollHeight - (scrollTop + windowHeight) <= 500) {
         fetchMoreData();
@@ -44,7 +45,7 @@ const TrendingList = () => {
 
   useEffect(() => {
     getTrendingVideos();
-  }, [country]);
+  }, [country, getTrendingVideos]);
 
   // Trending videos Scrolling
   const fetchMoreData = async () => {
@@ -75,34 +76,32 @@ const TrendingList = () => {
     <>
       <Grid gap={5} padding={"30px"}>
         {trendingVideos &&
-          trendingVideos.map((video) => {
-            return (
-              <SearchVideoCard
-                videoId={video.id}
-                channelId={video?.snippet?.channelId}
-                duration={
-                  video.contentDetails?.duration
-                    ? durationConverter(video.contentDetails?.duration)
-                    : ""
-                }
-                key={video.id}
-                title={
-                  video.snippet?.title
-                    ? formateTitle(convertHtmlEntities(video.snippet.title))
-                    : ""
-                }
-                thumbnail={
-                  video?.snippet.thumbnails?.maxres?.url ||
+          trendingVideos.map((video) => (
+            <SearchVideoCard
+              videoId={video.id}
+              channelId={video?.snippet?.channelId}
+              duration={
+                video.contentDetails?.duration
+                  ? durationConverter(video.contentDetails?.duration)
+                  : ""
+              }
+              key={video.id}
+              title={
+                video.snippet?.title
+                  ? formateTitle(convertHtmlEntities(video.snippet.title))
+                  : ""
+              }
+              thumbnail={
+                video?.snippet.thumbnails?.maxres?.url ||
                   video?.snippet.thumbnails?.standard?.url ||
                   ""
-                }
-                avatar={""}
-                postTime={timeConverter(video.snippet.publishedAt)}
-                views={viewsConverter(video.statistics.viewCount)}
-                channelName={video.snippet.channelTitle}
-              />
-            );
-          })}
+              }
+              avatar={""}
+              postTime={timeConverter(video.snippet.publishedAt)}
+              views={viewsConverter(video.statistics.viewCount)}
+              channelName={video.snippet.channelTitle}
+            />
+          ))}
 
         <SearchSkeleton />
         <SearchSkeleton />

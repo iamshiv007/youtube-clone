@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import YoutubeContext from "../../context/YoutubeContext";
-import RelatedVideoCard from "../cards/RelatedVideoCard";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Grid } from "@chakra-ui/react";
 import numeral from "numeral";
 import { formatDistanceToNow } from "date-fns";
 import axios from "axios";
+
+import RelatedVideoCard from "../cards/RelatedVideoCard";
+import YoutubeContext from "../../context/YoutubeContext";
 
 const RelatedList = () => {
   const {
@@ -22,8 +23,6 @@ const RelatedList = () => {
 
   // Access query parameters
   const category = queryParams.get("category");
-
-  const { videoId } = useParams();
 
   const nextPageTokenRef = useRef(nextPageToken);
 
@@ -52,7 +51,7 @@ const RelatedList = () => {
   useEffect(() => {
     getTrendingVideos();
     window.scrollTo(0, 0);
-  }, [country]);
+  }, [country, getTrendingVideos]);
 
   // Trending videos Scrolling
   const fetchMoreData = async () => {
@@ -86,33 +85,31 @@ const RelatedList = () => {
       <Grid gap={5} padding={"0px"}>
         {category &&
           trendingVideos &&
-          trendingVideos.map((video) => {
-            return (
-              <RelatedVideoCard
-                videoId={video.id}
-                channelId={video?.snippet?.channelId}
-                duration={
-                  video.contentDetails?.duration
-                    ? durationConverter(video.contentDetails?.duration)
-                    : ""
-                }
-                key={video.id}
-                title={
-                  video.snippet?.title
-                    ? formateTitle(convertHtmlEntities(video.snippet.title))
-                    : ""
-                }
-                thumbnail={
-                  video?.snippet.thumbnails?.maxres?.url ||
+          trendingVideos.map((video) => (
+            <RelatedVideoCard
+              videoId={video.id}
+              channelId={video?.snippet?.channelId}
+              duration={
+                video.contentDetails?.duration
+                  ? durationConverter(video.contentDetails?.duration)
+                  : ""
+              }
+              key={video.id}
+              title={
+                video.snippet?.title
+                  ? formateTitle(convertHtmlEntities(video.snippet.title))
+                  : ""
+              }
+              thumbnail={
+                video?.snippet.thumbnails?.maxres?.url ||
                   video?.snippet.thumbnails?.standard?.url ||
                   ""
-                }
-                postTime={timeConverter(video.snippet.publishedAt)}
-                views={viewsConverter(video.statistics.viewCount)}
-                channelName={video.snippet.channelTitle}
-              />
-            );
-          })}
+              }
+              postTime={timeConverter(video.snippet.publishedAt)}
+              views={viewsConverter(video.statistics.viewCount)}
+              channelName={video.snippet.channelTitle}
+            />
+          ))}
       </Grid>
     </>
   );

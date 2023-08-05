@@ -1,8 +1,9 @@
-import { Fragment } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Video from './pages/video/Video';
-import Home from './pages/home/Home';
-import './App.css';
+import React, { Fragment } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import Video from "./pages/video/Video";
+import Home from "./pages/home/Home";
+import "./App.css";
 
 function App() {
   return (

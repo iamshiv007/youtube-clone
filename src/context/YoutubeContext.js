@@ -10,20 +10,20 @@ export const ContextProvider = ({ children }) => {
   const [searchVideos, setSearchVideos] = useState([]);
   const [autocomplete, setAutocomplete] = useState([]);
   const [trendingVideos, setTrendingVideos] = useState([]);
-  const [country, setCountry] = useState('IN');
-  const [language, setLanguage] = useState('hi');
+  const [country, setCountry] = useState("IN");
+  const [language, setLanguage] = useState("hi");
   const [isLoading, setIsLoading] = useState(false);
 
   // // 1. Home Videos
   const getHomeVideos = async () => {
     setIsLoading(true)
     const options = {
-      method: 'GET',
-      url: 'https://youtube138.p.rapidapi.com/home/',
-      params: { hl: 'hi', gl: 'IN' },
+      method: "GET",
+      url: "https://youtube138.p.rapidapi.com/home/",
+      params: { hl: "hi", gl: "IN" },
       headers: {
-        'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
-        'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
+        "X-RapidAPI-Key": "46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004",
+        "X-RapidAPI-Host": "youtube138.p.rapidapi.com"
       }
     };
 
@@ -35,18 +35,18 @@ export const ContextProvider = ({ children }) => {
     } catch (error) {
 
       const options = {
-        method: 'GET',
-        url: 'https://youtube-v31.p.rapidapi.com/search',
+        method: "GET",
+        url: "https://youtube-v31.p.rapidapi.com/search",
         params: {
           regionCode: country,
-          part: 'id,snippet',
-          type: 'video',
-          maxResults: '50',
-          videoDuration: 'medium'
+          part: "id,snippet",
+          type: "video",
+          maxResults: "50",
+          videoDuration: "medium"
         },
         headers: {
-          'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
-          'X-RapidAPI-Host': 'youtube-v31.p.rapidapi.com'
+          "X-RapidAPI-Key": "46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004",
+          "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com"
         }
       };
 
@@ -83,17 +83,17 @@ export const ContextProvider = ({ children }) => {
   const getSearchVideos = async (query) => {
     setIsLoading(true)
     const options = {
-      method: 'GET',
-      url: 'https://youtube-v31.p.rapidapi.com/search',
+      method: "GET",
+      url: "https://youtube-v31.p.rapidapi.com/search",
       params: {
         q: query,
-        part: 'snippet,id',
+        part: "snippet,id",
         regionCode: country,
-        maxResults: '50'
+        maxResults: "50"
       },
       headers: {
-        'X-RapidAPI-Key': '46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004',
-        'X-RapidAPI-Host': 'youtube-v31.p.rapidapi.com'
+        "X-RapidAPI-Key": "46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004",
+        "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com"
       }
     };
 
@@ -108,7 +108,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   return (
-    <YoutubeContext.Provider value={{ isLoading, homeVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage, getSearchVideos, searchVideos, setIsLoading, getHomeVideos, getTrendingVideos }}>
+    <YoutubeContext.Provider value={{ isLoading, homeVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, language, setLanguage, getSearchVideos, searchVideos, setIsLoading, getHomeVideos }}>
       {children}
     </YoutubeContext.Provider>
   )

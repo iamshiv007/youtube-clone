@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import YoutubeContext from "../../context/YoutubeContext";
 import { Grid } from "@chakra-ui/react";
-import HomeVideoCard from "../cards/HomeVideoCard";
 import axios from "axios";
-import HomeSkeleton from "../layout/HomeSkeleton";
 import { formatDistanceToNow } from "date-fns";
+
+import YoutubeContext from "../../context/YoutubeContext";
+import HomeVideoCard from "../cards/HomeVideoCard";
+import HomeSkeleton from "../layout/HomeSkeleton";
+
 
 const VideoList = () => {
   const {
@@ -25,9 +27,9 @@ const VideoList = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight;
+      const {scrollHeight} = document.documentElement;
       const windowHeight = window.innerHeight;
-      const scrollTop = document.documentElement.scrollTop;
+      const {scrollTop} = document.documentElement;
 
       if (scrollHeight - (scrollTop + windowHeight) <= 500) {
         fetchMoreData(nextPageToken);
@@ -84,7 +86,7 @@ const VideoList = () => {
 
   useEffect(() => {
     getHomeVideos();
-  }, [country]);
+  }, [country, getHomeVideos]);
 
   return (
     <>
@@ -95,46 +97,44 @@ const VideoList = () => {
         padding={"30px"}
       >
         {homeVideos &&
-          homeVideos.map((video) => {
-            return (
-              <HomeVideoCard
-                key={video.video?.videoId || video.id?.videoId}
-                videoId={video.video?.videoId || video.id?.videoId}
-                channelId={video?.snippet?.channelId}
-                title={
-                  video.video?.title
-                    ? formateTitle(convertHtmlEntities(video.video?.title))
-                    : "" ||
+          homeVideos.map((video) => (
+            <HomeVideoCard
+              key={video.video?.videoId || video.id?.videoId}
+              videoId={video.video?.videoId || video.id?.videoId}
+              channelId={video?.snippet?.channelId}
+              title={
+                video.video?.title
+                  ? formateTitle(convertHtmlEntities(video.video?.title))
+                  : "" ||
                       formateTitle(convertHtmlEntities(video.snippet?.title)) ||
                       ""
-                }
-                thumbnail={
-                  video?.video?.thumbnails[0].url ||
+              }
+              thumbnail={
+                video?.video?.thumbnails[0].url ||
                   video.snippet?.thumbnails.high.url ||
                   video.snippet?.thumbnails.medium.url ||
                   ""
-                }
-                avatar={video.video?.author?.avatar[0]?.url || ""}
-                postTime={
-                  video.video?.publishedTimeText || video.snippet?.publishedAt
-                    ? timeConverter(video.snippet?.publishedAt)
-                    : ""
-                }
-                views={
-                  video.video?.stats.views
-                    ? viewsConverter(
-                        video.video?.stats?.views || video.video?.stats?.viewers
-                      )
-                    : "" || ""
-                }
-                channelName={
-                  video.video?.author?.title ||
+              }
+              avatar={video.video?.author?.avatar[0]?.url || ""}
+              postTime={
+                video.video?.publishedTimeText || video.snippet?.publishedAt
+                  ? timeConverter(video.snippet?.publishedAt)
+                  : ""
+              }
+              views={
+                video.video?.stats.views
+                  ? viewsConverter(
+                    video.video?.stats?.views || video.video?.stats?.viewers
+                  )
+                  : "" || ""
+              }
+              channelName={
+                video.video?.author?.title ||
                   video.snippet?.channelTitle ||
                   ""
-                }
-              />
-            );
-          })}
+              }
+            />
+          ))}
         <HomeSkeleton />
         <HomeSkeleton />
         <HomeSkeleton />

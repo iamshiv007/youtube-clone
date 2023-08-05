@@ -11,10 +11,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
-import Logo from "../../images/Logo.png";
 import { NavLink } from "react-router-dom";
-import SearchBox from "./SearchBox";
 import { BsBell, BsCameraVideo } from "react-icons/bs";
+
+import Logo from "../../images/Logo.png";
+import SearchBox from "./SearchBox";
 import { countries } from "../constants/Constants";
 import YoutubeContext from "../../context/YoutubeContext";
 

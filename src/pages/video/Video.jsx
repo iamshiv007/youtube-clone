@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import YouTube from "react-youtube";
-import Header from "../../components/layout/Header";
 import {
   Avatar,
   Box,
@@ -18,6 +17,8 @@ import { LiaDownloadSolid } from "react-icons/lia";
 import { FiMoreHorizontal } from "react-icons/fi";
 import numeral from "numeral";
 import { formatDistanceToNow } from "date-fns";
+
+import Header from "../../components/layout/Header";
 import RelatedList from "../../components/list/RelatedList.jsx";
 
 const Video = () => {
@@ -25,27 +26,30 @@ const Video = () => {
   const [channelDetails, setChannelDetails] = useState({});
   const { videoId, channelId } = useParams();
 
-  const getVideoDetails = async () => {
+  const getVideoDetails = useCallback(async () => {
     const res = await axios.get(
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc`
     );
     setvideoDetails(res.data.items[0]);
     console.log(res.data);
-  };
+  }, [videoId]);
 
-  const getChannelDetails = async () => {
+  const getChannelDetails = useCallback(async () => {
     const res2 = await axios.get(
       `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc`
     );
     console.log(res2.data);
     setChannelDetails(res2.data.items[0]);
-  };
+  }, [channelId]);
 
   useEffect(() => {
-    console.log(videoId, channelId);
-    getVideoDetails();
-    getChannelDetails();
-  }, []);
+    const getVideoAndChannelDetails = async () => {
+      await getVideoDetails();
+      await getChannelDetails();
+    };
+
+    getVideoAndChannelDetails();
+  }, [channelId, videoId, getVideoDetails, getChannelDetails]);
 
   // Video Options
   const opts = {
@@ -204,30 +208,30 @@ const VideoDetails = ({ videoDetails, channelDetails }) => {
         >
           {showMore
             ? videoDetails?.snippet?.description
-                .split(linkRegex)
-                .map((part, index) =>
-                  linkRegex.test(part, index) ? (
-                    <Link color={"#007bff"} href={part} key={index}>
-                      {part}
-                    </Link>
-                  ) : (
-                    part
-                  )
+              .split(linkRegex)
+              .map((part, index) =>
+                linkRegex.test(part, index) ? (
+                  <Link color={"#007bff"} href={part} key={index}>
+                    {part}
+                  </Link>
+                ) : (
+                  part
                 )
+              )
             : `${videoDetails?.snippet?.description
-                .split("")
-                .slice(0, 80)
-                .join("")}...`
-                .split(linkRegex)
-                .map((part, index) =>
-                  linkRegex.test(part, index) ? (
-                    <Link color={"#007bff"} href={part} key={index}>
-                      {part}
-                    </Link>
-                  ) : (
-                    part
-                  )
-                )}
+              .split("")
+              .slice(0, 80)
+              .join("")}...`
+              .split(linkRegex)
+              .map((part, index) =>
+                linkRegex.test(part, index) ? (
+                  <Link color={"#007bff"} href={part} key={index}>
+                    {part}
+                  </Link>
+                ) : (
+                  part
+                )
+              )}
         </Box>
       </Box>
     </>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+
 import VideoList from "../../components/list/HomeList";
 import TrendingList from "../../components/list/TrendingList";
 import SearchVideoList from "../../components/list/SearchList";

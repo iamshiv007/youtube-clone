@@ -9,8 +9,9 @@ import {
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { MdKeyboardVoice } from "react-icons/md";
-import YoutubeContext from "../../context/YoutubeContext";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+
+import YoutubeContext from "../../context/YoutubeContext";
 
 const SearchBox = () => {
   const { generateAutocomplete, autocomplete } = useContext(YoutubeContext);
@@ -138,29 +139,27 @@ const SearchBox = () => {
 
 export default SearchBox;
 
-const AutoSuggestion = ({ autocomplete }) => {
-  return (
-    <>
-      {autocomplete && autocomplete.length !== 0 && (
-        <Box bg="#222222" borderRadius={"10px"} padding={"15px 0"}>
-          {autocomplete.map((text) => (
-            <NavLink to={`/?query=${text}`} key={text}>
-              <Text
-                display={"flex"}
-                gap={4}
-                alignItems={"center"}
-                color="white"
-                _hover={{ bg: "#3a3a3a" }}
-                padding={"3px 10px"}
-                fontSize={"lg"}
-              >
-                <BiSearch size={"20px"} color="white" />
-                {text}
-              </Text>
-            </NavLink>
-          ))}
-        </Box>
-      )}
-    </>
-  );
-};
+const AutoSuggestion = ({ autocomplete }) => (
+  <>
+    {autocomplete && autocomplete.length !== 0 && (
+      <Box bg="#222222" borderRadius={"10px"} padding={"15px 0"}>
+        {autocomplete.map((text) => (
+          <NavLink to={`/?query=${text}`} key={text}>
+            <Text
+              display={"flex"}
+              gap={4}
+              alignItems={"center"}
+              color="white"
+              _hover={{ bg: "#3a3a3a" }}
+              padding={"3px 10px"}
+              fontSize={"lg"}
+            >
+              <BiSearch size={"20px"} color="white" />
+              {text}
+            </Text>
+          </NavLink>
+        ))}
+      </Box>
+    )}
+  </>
+);

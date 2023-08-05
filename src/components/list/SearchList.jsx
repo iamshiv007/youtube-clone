@@ -1,9 +1,9 @@
-import { Fragment, useContext, useEffect } from "react";
-import { Grid, Text } from "@chakra-ui/react";
-import React from "react";
-import YoutubeContext from "../../context/YoutubeContext";
+import React, { Fragment, useContext, useEffect } from "react";
+import { Grid } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
+
+import YoutubeContext from "../../context/YoutubeContext";
 import HomeVideoCard from "../cards/HomeVideoCard";
 import HomeSkeleton from "../layout/HomeSkeleton";
 
@@ -19,7 +19,7 @@ const SearchVideoList = () => {
 
   useEffect(() => {
     getSearchVideos(query);
-  }, [query, country]);
+  }, [query, country, getSearchVideos]);
 
   return (
     <Fragment>
@@ -30,28 +30,26 @@ const SearchVideoList = () => {
         padding={"30px"}
       >
         {searchVideos &&
-          searchVideos.map((video) => {
-            return isLoading ? (
-              <>
-                <HomeSkeleton />
-                <HomeSkeleton />
-                <HomeSkeleton />
-              </>
-            ) : (
-              <HomeVideoCard
-                videoId={video.id.videoId}
-                channelId={video?.snippet?.channelId}
-                key={video.id.videoId}
-                duration={"04:35"}
-                title={formateTitle(convertHtmlEntities(video.snippet.title))}
-                thumbnail={video.snippet.thumbnails.high.url}
-                avatar={""}
-                postTime={timeConverter(video.snippet.publishedAt)}
-                views={""}
-                channelName={video.snippet.channelTitle}
-              />
-            );
-          })}
+          searchVideos.map((video) => isLoading ? (
+            <>
+              <HomeSkeleton />
+              <HomeSkeleton />
+              <HomeSkeleton />
+            </>
+          ) : (
+            <HomeVideoCard
+              videoId={video.id.videoId}
+              channelId={video?.snippet?.channelId}
+              key={video.id.videoId}
+              duration={"04:35"}
+              title={formateTitle(convertHtmlEntities(video.snippet.title))}
+              thumbnail={video.snippet.thumbnails.high.url}
+              avatar={""}
+              postTime={timeConverter(video.snippet.publishedAt)}
+              views={""}
+              channelName={video.snippet.channelTitle}
+            />
+          ))}
         <>
           <HomeSkeleton />
           <HomeSkeleton />
