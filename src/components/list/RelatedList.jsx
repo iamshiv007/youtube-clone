@@ -1,22 +1,29 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import YoutubeContext from "../../context/YoutubeContext";
+import RelatedVideoCard from "../cards/RelatedVideoCard";
+import { useLocation, useParams } from "react-router-dom";
 import { Grid } from "@chakra-ui/react";
-import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
+import { formatDistanceToNow } from "date-fns";
 import axios from "axios";
-import SearchVideoCard from "../cards/SearchVideoCard";
-import SearchSkeleton from "../layout/SearchSkeleton";
 
-const TrendingList = () => {
+const RelatedList = () => {
   const {
     trendingVideos,
     setTrendingVideos,
+    setIsLoading,
     country,
     getTrendingVideos,
-    setIsLoading,
-    isLoading,
   } = useContext(YoutubeContext);
   const [nextPageToken, setNextPageToken] = useState("");
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  // Access query parameters
+  const category = queryParams.get("category");
+
+  const { videoId } = useParams();
 
   const nextPageTokenRef = useRef(nextPageToken);
 
@@ -26,13 +33,13 @@ const TrendingList = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight;
-      const windowHeight = window.innerHeight;
-      const scrollTop = document.documentElement.scrollTop;
-
-      if (scrollHeight - (scrollTop + windowHeight) <= 500) {
-        fetchMoreData();
+      if (
+        window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight
+      ) {
+        return;
       }
+      fetchMoreData(nextPageToken);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -44,6 +51,7 @@ const TrendingList = () => {
 
   useEffect(() => {
     getTrendingVideos();
+    window.scrollTo(0, 0);
   }, [country]);
 
   // Trending videos Scrolling
@@ -53,8 +61,10 @@ const TrendingList = () => {
       const res = await axios.get(
         `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${nextPageTokenRef.current}`
       );
+      alert(country);
 
       const newNextPageToken = res.data.nextPageToken;
+      console.log(newNextPageToken, 65);
 
       const res2 = await axios.get(
         `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${newNextPageToken}`
@@ -73,11 +83,12 @@ const TrendingList = () => {
 
   return (
     <>
-      <Grid gap={5} padding={"30px"}>
-        {trendingVideos &&
+      <Grid gap={5} padding={"0px"}>
+        {category &&
+          trendingVideos &&
           trendingVideos.map((video) => {
             return (
-              <SearchVideoCard
+              <RelatedVideoCard
                 videoId={video.id}
                 channelId={video?.snippet?.channelId}
                 duration={
@@ -96,33 +107,18 @@ const TrendingList = () => {
                   video?.snippet.thumbnails?.standard?.url ||
                   ""
                 }
-                avatar={""}
                 postTime={timeConverter(video.snippet.publishedAt)}
                 views={viewsConverter(video.statistics.viewCount)}
                 channelName={video.snippet.channelTitle}
               />
             );
           })}
-
-        <SearchSkeleton />
-        <SearchSkeleton />
-        <SearchSkeleton />
-
-        {isLoading ? (
-          <>
-            <SearchSkeleton />
-            <SearchSkeleton />
-            <SearchSkeleton />
-          </>
-        ) : (
-          ""
-        )}
       </Grid>
     </>
   );
 };
 
-export default TrendingList;
+export default RelatedList;
 
 // Views
 const viewsConverter = (views) => {
@@ -159,9 +155,9 @@ const timeConverter = (time) => {
 const formateTitle = (title) => {
   const char = title.split("");
 
-  if (char.length < 100) {
+  if (char.length < 60) {
     return title;
   }
 
-  return `${char.slice(0, 100).join("")}...`;
+  return `${char.slice(0, 60).join("")}...`;
 };

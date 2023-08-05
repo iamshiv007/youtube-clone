@@ -1,6 +1,6 @@
 import { AiFillHome, AiTwotoneFire } from "react-icons/ai";
 import { MdSportsBaseball, MdSportsEsports } from "react-icons/md";
-import { BiCameraMovie, BiSolidBookReader } from "react-icons/bi";
+import { BiCameraMovie } from "react-icons/bi";
 import { RiJavascriptFill } from "react-icons/ri";
 
 export const sidebarData = [

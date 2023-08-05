@@ -1,37 +1,34 @@
-import { Avatar, Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const SearchVideoCard = ({
+const RelatedVideoCard = ({
   videoId,
   title,
   thumbnail,
   duration,
   views,
   postTime,
-  avatar,
   channelName,
-  desc,
   channelId,
 }) => {
   return (
     <>
-      <NavLink to={`/video/${videoId}/${channelId}?category=${"Trending"}`}>
-        <Flex width={"100%"} gap={5}>
+      <NavLink to={`/video/${videoId}/${channelId}?category="Trending`}>
+        <Flex alignItems={"center"} width={"100%"} gap={5}>
           <Box
             backgroundColor="#2e2c2c"
             borderRadius={"8px"}
             position={"relative"}
             overflow={"hidden"}
-            width={"30%"}
-            height={"170px"}
+            width={"140px"}
+            height={"fit-content"}
           >
             <Image
               src={thumbnail}
-              width="100%"
               alt="thumbnail"
               objectFit={"cover"}
-              height={"100%"}
+              width={"100%"}
             />
             <Text
               right={3}
@@ -48,34 +45,18 @@ const SearchVideoCard = ({
           </Box>
 
           <Box width="70%">
-            <Text fontSize={"22px"} color={"white"}>
+            <Text fontSize={"16px"} color={"white"}>
               {title}
             </Text>
-            <Text marginTop={"5px"} color={"#b7b5b5"} fontSize={"sm"}>
+            <Text color={"#b7b5b5"} fontSize={"xs"}>
               {views || ""} {postTime || "1 day ago"}
             </Text>
 
-            <Flex marginTop={"10px"} gap={3} alignItems={"center"}>
-              {avatar ? (
-                <Image
-                  height={"35px"}
-                  borderRadius={"100%"}
-                  src={avatar}
-                  alt="channel"
-                />
-              ) : (
-                <Avatar
-                  size={"sm"}
-                  name={channelName}
-                  src="https://bit.ly/tioluwani-kolawole"
-                />
-              )}
+            <Flex gap={3} alignItems={"center"}>
               <Text color={"#b7b5b5"} fontSize={"sm"}>
                 {channelName}
               </Text>
             </Flex>
-
-            <Text>{desc || ""}</Text>
           </Box>
         </Flex>
       </NavLink>
@@ -83,4 +64,4 @@ const SearchVideoCard = ({
   );
 };
 
-export default SearchVideoCard;
+export default RelatedVideoCard;

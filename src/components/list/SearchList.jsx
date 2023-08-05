@@ -35,11 +35,12 @@ const SearchVideoList = () => {
               <>
                 <HomeSkeleton />
                 <HomeSkeleton />
-                <HomeSkeleton />{" "}
+                <HomeSkeleton />
               </>
             ) : (
               <HomeVideoCard
                 videoId={video.id.videoId}
+                channelId={video?.snippet?.channelId}
                 key={video.id.videoId}
                 duration={"04:35"}
                 title={formateTitle(convertHtmlEntities(video.snippet.title))}
@@ -51,6 +52,14 @@ const SearchVideoList = () => {
               />
             );
           })}
+        <>
+          <HomeSkeleton />
+          <HomeSkeleton />
+          <HomeSkeleton />
+          <HomeSkeleton />
+          <HomeSkeleton />
+          <HomeSkeleton />
+        </>
       </Grid>
     </Fragment>
   );

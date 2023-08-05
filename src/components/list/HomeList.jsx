@@ -100,10 +100,13 @@ const VideoList = () => {
               <HomeVideoCard
                 key={video.video?.videoId || video.id?.videoId}
                 videoId={video.video?.videoId || video.id?.videoId}
+                channelId={video?.snippet?.channelId}
                 title={
                   video.video?.title
-                    ? formateTitle(video.video?.title)
-                    : "" || formateTitle(video.snippet?.title) || ""
+                    ? formateTitle(convertHtmlEntities(video.video?.title))
+                    : "" ||
+                      formateTitle(convertHtmlEntities(video.snippet?.title)) ||
+                      ""
                 }
                 thumbnail={
                   video?.video?.thumbnails[0].url ||
@@ -169,6 +172,13 @@ const formateTitle = (title) => {
 
   return `${char.slice(0, 60).join("")}...`;
 };
+
+// Convert HTML entities in title
+function convertHtmlEntities(inputString) {
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = inputString;
+  return textarea.value;
+}
 
 // Views
 const viewsConverter = (views) => {

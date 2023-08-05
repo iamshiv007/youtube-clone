@@ -11,10 +11,11 @@ const HomeVideoCard = ({
   duration,
   avatar,
   channelName,
+  channelId
 }) => {
   return (
     <>
-      <NavLink to={`/video/${videoId}`}>
+      <NavLink to={`/video/${videoId}/${channelId}`}>
         <Box>
           <Box
             borderRadius={"8px"}
