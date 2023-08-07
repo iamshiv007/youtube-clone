@@ -1,7 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Grid } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
+import InfiniteScroll from "react-infinite-scroll-component";
+import axios from "axios";
 
 import YoutubeContext from "../../context/YoutubeContext";
 import SearchVideoCard from "../cards/SearchVideoCard";
@@ -13,57 +15,102 @@ const TrendingList = () => {
     country,
     getTrendingVideos,
     isLoading,
+    setIsLoading,
+    setTrendingVideos,
   } = useContext(YoutubeContext);
 
   useEffect(() => {
     getTrendingVideos();
   }, [country]);
 
+  const [nextPageToken, setNextPageToken] = useState("");
+
+  // Trending videos Scrolling
+  const fetchMoreData = async () => {
+    try {
+      setIsLoading(true);
+      const res = await axios.get(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${nextPageToken}`
+      );
+
+      const newNextPageToken = res.data.nextPageToken;
+
+      const res2 = await axios.get(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${newNextPageToken}`
+      );
+      setTrendingVideos((prevTrendingVideos) => [
+        ...prevTrendingVideos,
+        ...res2.data.items,
+      ]);
+      setIsLoading(false);
+
+      setNextPageToken(() => newNextPageToken);
+    } catch (error) {
+      alert(error?.response?.data?.message || "Error")
+      console.log(error);
+    }
+  };
+
   return (
     <>
-      <Grid gap={5} padding={"30px"}>
-        {trendingVideos &&
-          trendingVideos.map((video) => (
-            <SearchVideoCard
-              videoId={video.id}
-              channelId={video?.snippet?.channelId}
-              duration={
-                video.contentDetails?.duration
-                  ? durationConverter(video.contentDetails?.duration)
-                  : ""
-              }
-              key={video.id}
-              title={
-                video.snippet?.title
-                  ? formateTitle(convertHtmlEntities(video.snippet.title))
-                  : ""
-              }
-              thumbnail={
-                video?.snippet.thumbnails?.maxres?.url ||
-                video?.snippet.thumbnails?.standard?.url ||
-                ""
-              }
-              avatar={""}
-              postTime={timeConverter(video.snippet.publishedAt)}
-              views={viewsConverter(video.statistics.viewCount)}
-              channelName={video.snippet.channelTitle}
-            />
-          ))}
-
-        <SearchSkeleton />
-        <SearchSkeleton />
-        <SearchSkeleton />
-
-        {isLoading ? (
-          <>
-            <SearchSkeleton />
-            <SearchSkeleton />
-            <SearchSkeleton />
-          </>
-        ) : (
-          ""
-        )}
-      </Grid>
+      <InfiniteScroll
+        dataLength={trendingVideos.length} //This is important field to render the next data
+        next={fetchMoreData}
+        hasMore={true}
+        loader={
+          isLoading ? (
+            <Grid gap={5} padding={"30px"}>
+              <>
+                <SearchSkeleton />
+                <SearchSkeleton />
+                <SearchSkeleton />
+              </>
+            </Grid>
+          ) : (
+            ""
+          )
+        }
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        <>
+          <Grid gap={5} padding={"30px"}>
+            {trendingVideos &&
+              trendingVideos.map((video) => (
+                <SearchVideoCard
+                  videoId={video.id}
+                  channelId={video?.snippet?.channelId}
+                  duration={
+                    video.contentDetails?.duration
+                      ? durationConverter(video.contentDetails?.duration)
+                      : ""
+                  }
+                  key={video.id}
+                  title={
+                    video.snippet?.title
+                      ? formateTitle(convertHtmlEntities(video.snippet.title))
+                      : ""
+                  }
+                  thumbnail={
+                    video?.snippet.thumbnails?.maxres?.url ||
+                    video?.snippet.thumbnails?.standard?.url ||
+                    ""
+                  }
+                  avatar={""}
+                  postTime={timeConverter(video.snippet.publishedAt)}
+                  views={viewsConverter(video.statistics.viewCount)}
+                  channelName={video.snippet.channelTitle}
+                />
+              ))}
+          </Grid>
+          <SearchSkeleton />
+          <SearchSkeleton />
+          <SearchSkeleton />
+        </>
+      </InfiniteScroll>
     </>
   );
 };

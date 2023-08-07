@@ -22,7 +22,11 @@ const Layout = ({ children }) => (
         </Box>
 
         <Box>
-          <Box minHeight={"90vh"} width={"100%"} margin={"auto"}>
+          <Box
+            minHeight={"90vh"}
+            width={"100%"}
+            margin={"auto"}
+          >
             {children}
           </Box>
         </Box>
