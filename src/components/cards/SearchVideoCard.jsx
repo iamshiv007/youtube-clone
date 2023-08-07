@@ -50,9 +50,18 @@ const SearchVideoCard = ({
           <Text fontSize={"22px"} color={"white"}>
             {title}
           </Text>
-          <Text marginTop={"5px"} color={"#b7b5b5"} fontSize={"sm"}>
-            {views || ""} {postTime || "1 day ago"}
-          </Text>
+
+          <Flex margintop="5px" gap={2}>
+            <Text color={"#b7b5b5"} fontSize={"sm"}>
+              {views || ""}{" "}
+            </Text>
+            <Text color={"#b7b5b5"} fontSize={"sm"}>
+              |
+            </Text>
+            <Text color={"#b7b5b5"} fontSize={"sm"}>
+              {postTime || "1 day ago"}
+            </Text>
+          </Flex>
 
           <Flex marginTop={"10px"} gap={3} alignItems={"center"}>
             {avatar ? (

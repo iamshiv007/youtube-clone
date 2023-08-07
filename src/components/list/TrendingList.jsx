@@ -6,8 +6,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 
 import YoutubeContext from "../../context/YoutubeContext";
-import SearchVideoCard from "../cards/SearchVideoCard";
 import SearchSkeleton from "../layout/SearchSkeleton";
+import { errorhandling } from "../../utils/utils";
+import SearchVideoCard from "../cards/SearchVideoCard";
 
 const TrendingList = () => {
   const {
@@ -20,6 +21,7 @@ const TrendingList = () => {
   } = useContext(YoutubeContext);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getTrendingVideos();
   }, [country]);
 
@@ -30,13 +32,13 @@ const TrendingList = () => {
     try {
       setIsLoading(true);
       const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${nextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=10&pageToken=${nextPageToken}`
       );
 
       const newNextPageToken = res.data.nextPageToken;
 
       const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${newNextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=10&pageToken=${newNextPageToken}`
       );
       setTrendingVideos((prevTrendingVideos) => [
         ...prevTrendingVideos,
@@ -46,8 +48,7 @@ const TrendingList = () => {
 
       setNextPageToken(() => newNextPageToken);
     } catch (error) {
-      alert(error?.response?.data?.message || "Error")
-      console.log(error);
+      errorhandling(error);
     }
   };
 
@@ -105,10 +106,10 @@ const TrendingList = () => {
                   channelName={video.snippet.channelTitle}
                 />
               ))}
+            <SearchSkeleton />
+            <SearchSkeleton />
+            <SearchSkeleton />
           </Grid>
-          <SearchSkeleton />
-          <SearchSkeleton />
-          <SearchSkeleton />
         </>
       </InfiniteScroll>
     </>

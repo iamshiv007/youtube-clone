@@ -1,5 +1,5 @@
 import React from "react";
-import { AiFillHome, AiTwotoneFire } from "react-icons/ai";
+import { AiTwotoneFire } from "react-icons/ai";
 import {
   MdSportsBaseball,
   MdSportsEsports,
@@ -15,7 +15,6 @@ import { FaUserTie } from "react-icons/fa";
 import { RiKakaoTalkLine } from "react-icons/ri";
 
 export const sidebarData = [
-  { name: "Home", icon: <AiFillHome /> },
   { name: "Trending", icon: <AiTwotoneFire /> },
   { name: "Podcasts", icon: <RiKakaoTalkLine /> },
   { name: "Programming and Coding", icon: <BsCodeSlash /> },

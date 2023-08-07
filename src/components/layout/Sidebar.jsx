@@ -18,13 +18,7 @@ const Sidebar = () => (
       {sidebarData.map((data) => (
         <NavLink
           key={data.name}
-          to={
-            data.name === "Home"
-              ? "/"
-              : data.name === "Trending"
-                ? `/?category=${data.name}`
-                : `/?query=${data.name}`
-          }
+          to={data.name === "Trending" ? "/" : `/?query=${data.name}`}
         >
           <Box
             color="white"

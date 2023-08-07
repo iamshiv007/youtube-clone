@@ -1,6 +1,8 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
 
+import { errorhandling } from "../utils/utils";
+
 const YoutubeContext = createContext()
 
 export default YoutubeContext
@@ -35,11 +37,10 @@ export const ContextProvider = ({ children }) => {
 
     try {
       const response = await axios.request(options);
-      setHomeVideos(response.data.items)
-      setIsLoading(false)
+      setHomeVideos(response.data.items) /
+        setIsLoading(false)
     } catch (error) {
-      console.error(error);
-      alert(error?.response?.data?.message || "Some Error Genrated")
+      errorhandling(error)
     }
   }
 
@@ -51,22 +52,19 @@ export const ContextProvider = ({ children }) => {
       setAutocomplete(res.data[1])
 
     } catch (error) {
-      console.lof(error)
-      alert(error?.response?.data?.message || "Some Error Genrated")
+      errorhandling(error)
     }
   }
 
   // 3. Trending Videos
   const getTrendingVideos = async () => {
     setIsLoading(true)
-    console.log(process.env.REACT_APP_YOUTUBE_API_GOOGLE2)
     try {
-      const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=5`)
+      const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=10`)
       setTrendingVideos(res.data.items)
       setIsLoading(false)
     } catch (error) {
-      console.log(error)
-      alert(error?.response?.data?.message || "Some Error Genrated")
+      errorhandling(error)
     }
   }
 
@@ -95,8 +93,7 @@ export const ContextProvider = ({ children }) => {
       setIsLoading(false)
       setSearchVideos(response.data.items)
     } catch (error) {
-      console.log(error)
-      alert(error?.response?.data?.message || "Some Error Genrated")
+      errorhandling(error)
     }
   }
 
