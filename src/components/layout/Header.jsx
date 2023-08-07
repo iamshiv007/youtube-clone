@@ -14,7 +14,6 @@ import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { BsBell, BsCameraVideo } from "react-icons/bs";
 
-import Logo from "../../images/Logo.png";
 import SearchBox from "./SearchBox";
 import { countries } from "../constants/Constants";
 import YoutubeContext from "../../context/YoutubeContext";
@@ -42,8 +41,13 @@ const Header = () => {
         <Flex justifyContent={"space-between"} alignItems={"center"}>
           <NavLink to="/">
             <Flex gap={3} alignItems={"center"}>
-              <Image height={"7vh"} objectFit={"cover"} src={Logo} alt="logo" />
-              <Text color={"white"}>Video Library</Text>
+              <Image
+                height={"7vh"}
+                objectFit={"cover"}
+                src={"/logo512.png"}
+                alt="logo"
+              />
+              <Text color={"white"}>YouTube Clone</Text>
             </Flex>
           </NavLink>
 

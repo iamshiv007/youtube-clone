@@ -1,92 +1,18 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Grid } from "@chakra-ui/react";
-import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
 
 import YoutubeContext from "../../context/YoutubeContext";
 import HomeVideoCard from "../cards/HomeVideoCard";
 import HomeSkeleton from "../layout/HomeSkeleton";
 
-
 const VideoList = () => {
-  const {
-    setHomeVideos,
-    setIsLoading,
-    isLoading,
-    homeVideos,
-    getHomeVideos,
-    country,
-  } = useContext(YoutubeContext);
-  const [nextPageToken, setNextPageToken] = useState();
-
-  const nextPageTokenRef = useRef(nextPageToken);
-
-  useEffect(() => {
-    nextPageTokenRef.current = nextPageToken; // Update the ref when nextPageToken changes
-  }, [nextPageToken]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const {scrollHeight} = document.documentElement;
-      const windowHeight = window.innerHeight;
-      const {scrollTop} = document.documentElement;
-
-      if (scrollHeight - (scrollTop + windowHeight) <= 500) {
-        fetchMoreData(nextPageToken);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-    // eslint-disable-next-line
-  }, []);
-
-  // Home Videos Scrolling
-  const fetchMoreData = async () => {
-    try {
-      const options1 = {
-        method: "GET",
-        url: "https://youtube138.p.rapidapi.com/home/",
-        params: { hl: "hi", gl: "IN", cursor: nextPageTokenRef.current },
-        headers: {
-          "X-RapidAPI-Key":
-            "46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004",
-          "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
-        },
-      };
-
-      const res = await axios.request(options1);
-
-      const newNextPageToken = res.data.cursorNext;
-
-      const options2 = {
-        method: "GET",
-        url: "https://youtube138.p.rapidapi.com/home/",
-        params: { hl: "hi", gl: "IN", cursor: newNextPageToken },
-        headers: {
-          "X-RapidAPI-Key":
-            "46e102466emsh069eb8e1a1f88bep148650jsn161589bc0004",
-          "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
-        },
-      };
-      const res2 = await axios.request(options2);
-      setHomeVideos((prevHomeVideos) => [
-        ...prevHomeVideos,
-        ...res2.data.contents,
-      ]);
-      setIsLoading(false);
-
-      setNextPageToken(() => newNextPageToken);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { isLoading, homeVideos, getHomeVideos, country } =
+    useContext(YoutubeContext);
 
   useEffect(() => {
     getHomeVideos();
-  }, [country, getHomeVideos]);
+  }, [country]);
 
   return (
     <>
@@ -99,40 +25,25 @@ const VideoList = () => {
         {homeVideos &&
           homeVideos.map((video) => (
             <HomeVideoCard
-              key={video.video?.videoId || video.id?.videoId}
-              videoId={video.video?.videoId || video.id?.videoId}
+              key={video.id?.videoId}
+              videoId={video.id?.videoId}
               channelId={video?.snippet?.channelId}
               title={
-                video.video?.title
-                  ? formateTitle(convertHtmlEntities(video.video?.title))
-                  : "" ||
-                      formateTitle(convertHtmlEntities(video.snippet?.title)) ||
-                      ""
+                formateTitle(convertHtmlEntities(video.snippet?.title)) || ""
               }
               thumbnail={
-                video?.video?.thumbnails[0].url ||
-                  video.snippet?.thumbnails.high.url ||
-                  video.snippet?.thumbnails.medium.url ||
-                  ""
+                video.snippet?.thumbnails.high.url ||
+                video.snippet?.thumbnails.medium.url ||
+                ""
               }
-              avatar={video.video?.author?.avatar[0]?.url || ""}
+              avatar={""}
               postTime={
-                video.video?.publishedTimeText || video.snippet?.publishedAt
+                video.snippet?.publishedAt
                   ? timeConverter(video.snippet?.publishedAt)
                   : ""
               }
-              views={
-                video.video?.stats.views
-                  ? viewsConverter(
-                    video.video?.stats?.views || video.video?.stats?.viewers
-                  )
-                  : "" || ""
-              }
-              channelName={
-                video.video?.author?.title ||
-                  video.snippet?.channelTitle ||
-                  ""
-              }
+              views={""}
+              channelName={video.snippet?.channelTitle || ""}
             />
           ))}
         <HomeSkeleton />
@@ -179,18 +90,6 @@ function convertHtmlEntities(inputString) {
   textarea.innerHTML = inputString;
   return textarea.value;
 }
-
-// Views
-const viewsConverter = (views) => {
-  const abbreviations = ["K", "M", "B", "T"];
-
-  if (views < 1000) return views.toString();
-
-  const exp = Math.floor(Math.log(views) / Math.log(1000));
-  const roundedValue = (views / Math.pow(1000, exp)).toFixed(2);
-
-  return `${roundedValue}${abbreviations[exp - 1]}`;
-};
 
 // Video Uploaded
 const timeConverter = (time) => {

@@ -8,7 +8,7 @@ const Sidebar = () => (
   <>
     <Flex
       width={"fit-content"}
-      padding={"30px"}
+      padding={"20px"}
       direction={"column"}
       height={"90vh"}
       gap={2}
@@ -31,13 +31,13 @@ const Sidebar = () => (
             display="flex"
             gap={6}
             borderRadius="5px"
-            padding="5px 15px"
+            padding="5px"
             alignItems="center"
             zIndex={10}
             _hover={{ background: "#3a3a3a" }}
           >
             {" "}
-            <Text fontSize="xl">{data.icon} </Text>{" "}
+            <Text fontSize="2xl">{data.icon} </Text>{" "}
             <Text fontSize={""}> {data.name}</Text>
           </Box>
         </NavLink>

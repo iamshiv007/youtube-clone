@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Grid } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
-import axios from "axios";
 
 import YoutubeContext from "../../context/YoutubeContext";
 import SearchVideoCard from "../cards/SearchVideoCard";
@@ -11,66 +10,14 @@ import SearchSkeleton from "../layout/SearchSkeleton";
 const TrendingList = () => {
   const {
     trendingVideos,
-    setTrendingVideos,
     country,
     getTrendingVideos,
-    setIsLoading,
     isLoading,
   } = useContext(YoutubeContext);
-  const [nextPageToken, setNextPageToken] = useState("");
-
-  const nextPageTokenRef = useRef(nextPageToken);
-
-  useEffect(() => {
-    nextPageTokenRef.current = nextPageToken; // Update the ref when nextPageToken changes
-  }, [nextPageToken]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const {scrollHeight} = document.documentElement;
-      const windowHeight = window.innerHeight;
-      const {scrollTop} = document.documentElement;
-
-      if (scrollHeight - (scrollTop + windowHeight) <= 500) {
-        fetchMoreData();
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     getTrendingVideos();
-  }, [country, getTrendingVideos]);
-
-  // Trending videos Scrolling
-  const fetchMoreData = async () => {
-    try {
-      setIsLoading(true);
-      const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${nextPageTokenRef.current}`
-      );
-
-      const newNextPageToken = res.data.nextPageToken;
-
-      const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=5&pageToken=${newNextPageToken}`
-      );
-      setTrendingVideos((prevTrendingVideos) => [
-        ...prevTrendingVideos,
-        ...res2.data.items,
-      ]);
-      setIsLoading(false);
-
-      setNextPageToken(() => newNextPageToken);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [country]);
 
   return (
     <>
@@ -93,8 +40,8 @@ const TrendingList = () => {
               }
               thumbnail={
                 video?.snippet.thumbnails?.maxres?.url ||
-                  video?.snippet.thumbnails?.standard?.url ||
-                  ""
+                video?.snippet.thumbnails?.standard?.url ||
+                ""
               }
               avatar={""}
               postTime={timeConverter(video.snippet.publishedAt)}

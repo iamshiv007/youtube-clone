@@ -25,7 +25,7 @@ const SearchBox = () => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       generateAutocomplete(query);
-    }, 1000);
+    }, 800);
   };
 
   useEffect(() => {
@@ -33,7 +33,6 @@ const SearchBox = () => {
       if (event.target?.parentElement?.tagName === "A") return;
       if (inputRef.current && !inputRef.current.contains(event.target)) {
         setShowSuggestion(false);
-        console.log("36");
       }
     };
 
@@ -87,7 +86,7 @@ const SearchBox = () => {
                 placeholder="Search"
                 borderRadius={"30px 0 0 30px"}
                 fontSize={"lg"}
-                value={searchText}
+                value={searchText || ""}
                 onChange={(e) => {
                   setSearchText(e.target.value);
                   generateAutocompleteFun(e.target.value);

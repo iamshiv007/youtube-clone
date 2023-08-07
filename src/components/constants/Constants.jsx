@@ -1,24 +1,33 @@
-import React from "react"
+import React from "react";
 import { AiFillHome, AiTwotoneFire } from "react-icons/ai";
-import { MdSportsBaseball, MdSportsEsports } from "react-icons/md";
+import {
+  MdSportsBaseball,
+  MdSportsEsports,
+  MdOutlineHealthAndSafety,
+  MdScience,
+  MdFastfood,
+} from "react-icons/md";
 import { BiCameraMovie } from "react-icons/bi";
-import { RiJavascriptFill } from "react-icons/ri";
+import { GiBrain } from "react-icons/gi";
+import { FaSpaceAwesome } from "react-icons/fa6";
+import { BsCodeSlash } from "react-icons/bs";
+import { FaUserTie } from "react-icons/fa";
+import { RiKakaoTalkLine } from "react-icons/ri";
 
 export const sidebarData = [
   { name: "Home", icon: <AiFillHome /> },
   { name: "Trending", icon: <AiTwotoneFire /> },
-  { name: "Entertainment", icon: <AiTwotoneFire /> },
-  { name: "Podcasts", icon: <AiTwotoneFire /> },
+  { name: "Podcasts", icon: <RiKakaoTalkLine /> },
+  { name: "Programming and Coding", icon: <BsCodeSlash /> },
+  { name: "Science and Fact", icon: <MdScience /> },
+  { name: "Technology and Space", icon: <FaSpaceAwesome /> },
+  { name: "Business and Startups", icon: <FaUserTie /> },
   { name: "Sports and Highlightes", icon: <MdSportsBaseball /> },
   { name: "Movies and Webseries", icon: <BiCameraMovie /> },
-  { name: "Health and Fitness", icon: <AiTwotoneFire /> },
-  { name: "Programming and Coding", icon: <RiJavascriptFill /> },
-  { name: "Food and Blogging", icon: <AiTwotoneFire /> },
-  { name: "Science and Fact", icon: <AiTwotoneFire /> },
+  { name: "AI and ChatGpt", icon: <GiBrain /> },
+  { name: "Health and Fitness", icon: <MdOutlineHealthAndSafety /> },
+  { name: "Food and Blogging", icon: <MdFastfood /> },
   { name: "Gaming and Live", icon: <MdSportsEsports /> },
-  { name: "Technology and Space", icon: <MdSportsEsports /> },
-  { name: "Tech and Startups", icon: <MdSportsEsports /> },
-  { name: "AI and ChatGpt", icon: <MdSportsEsports /> },
 ];
 
 export const countries = [

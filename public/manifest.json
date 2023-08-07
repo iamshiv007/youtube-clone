@@ -1,16 +1,27 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Youtube 2",
+  "name": "Youtube clone by Shiv",
+  "description":"This is React YouTube Clone Where you can stream trending videos of different countries with infinite scrolling, you can search videos and you can choose any section in to sidebar which you want",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "512x512",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "logo32.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "32x32"
+    },
+    {
+      "src": "logo72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "logo256.png",
+      "type": "image/png",
+      "sizes": "256x256"
     },
     {
       "src": "logo512.png",
@@ -18,8 +29,14 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "background_color": "#ffffff",
+  "theme_color": "#ff0000",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "scope": "/",
+  "start_url": "/",
+  "categories": ["Entertainment", "Video"],
+  "prefer_related_applications": false,
+  "dir": "ltr",
+  "lang": "en-US"
+
 }
