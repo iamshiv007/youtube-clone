@@ -155,7 +155,7 @@ const TrendingList = () => {
           }
           loader={
             isLoading ? (
-              <Grid gap={5} padding={"20px"}>
+              <Grid gap={5}>
                 <>
                   <HomeSkeleton />
                   <HomeSkeleton />

@@ -25,37 +25,39 @@ const SearchVideoList = () => {
   return (
     <Fragment>
       <Grid
-        gridTemplateColumns={"1fr 1fr 1fr"}
+        gridTemplateColumns={{ base: "1fr", sm: "1fr", md: "1fr 1fr 1fr" }}
         gap={5}
         width="100%"
-        padding={"30px"}
+        padding={{ base: "0px", sm: "0px", md: "30px" }}
+        paddingTop={"5px"}
       >
+        {isLoading ? (
+          <>
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+            <HomeSkeleton />
+          </>
+        ) : (
+          ""
+        )}
         {searchVideos &&
-          searchVideos.map((video) =>
-            isLoading ? (
-              <>
-                <HomeSkeleton />
-                <HomeSkeleton />
-                <HomeSkeleton />
-                <HomeSkeleton />
-                <HomeSkeleton />
-                <HomeSkeleton />
-              </>
-            ) : (
-              <HomeVideoCard
-                videoId={video.id.videoId}
-                channelId={video?.snippet?.channelId}
-                key={video.id.videoId}
-                duration={"04:35"}
-                title={formateTitle(convertHtmlEntities(video.snippet.title))}
-                thumbnail={video.snippet.thumbnails.high.url}
-                avatar={""}
-                postTime={timeConverter(video.snippet.publishedAt)}
-                views={""}
-                channelName={video.snippet.channelTitle}
-              />
-            )
-          )}
+          searchVideos.map((video) => (
+            <HomeVideoCard
+              key={video.id.videoId}
+              videoId={video.id.videoId}
+              channelId={video?.snippet?.channelId}
+              duration={"04:35"}
+              title={formateTitle(convertHtmlEntities(video.snippet.title))}
+              thumbnail={video.snippet.thumbnails.high.url}
+              avatar={""}
+              postTime={timeConverter(video.snippet.publishedAt)}
+              views={""}
+              channelName={video.snippet.channelTitle}
+            />
+          ))}
         <>
           <HomeSkeleton />
           <HomeSkeleton />

@@ -7,7 +7,7 @@ const HomeVideoCard = ({
   thumbnail,
   title,
   postTime,
-  views,
+  // views,
   duration,
   avatar,
   channelName,
@@ -58,12 +58,20 @@ const HomeVideoCard = ({
 
           <Box color={"white"}>
             <Text fontWeight={"semibold"}>{title}</Text>
-            <Text marginTop={"5px"} fontSize={"xs"}>
+            <Text color={"#b7b5b5"} marginTop={"5px"} fontSize={"xs"}>
               {channelName}
             </Text>
-            <Text fontSize={"xs"}>
-              {views ? `${views} views` : ""} {postTime || ""}
-            </Text>
+            <Flex margintop="5px" gap={2}>
+              {/* <Text color={"#b7b5b5"} fontSize={"sm"}>
+                {views ? `${views} views` : ""}
+              </Text>
+              <Text color={"#b7b5b5"} fontSize={"sm"}>
+                |
+              </Text> */}
+              <Text color={"#b7b5b5"} fontSize={"sm"}>
+                {postTime || ""}
+              </Text>
+            </Flex>
           </Box>
         </Flex>
       </Box>

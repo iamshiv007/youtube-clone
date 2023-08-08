@@ -182,7 +182,7 @@ const MobileMenubar = ({ isOpen, setIsOpen }) => (
       top={0}
       left={0}
       display={isOpen ? "Block" : "none"}
-      bg={"#0000006d"}
+      bg={"#0000009b"}
       onClick={() => setIsOpen(!isOpen)}
       zIndex={12}
     >
