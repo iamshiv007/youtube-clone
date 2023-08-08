@@ -1,14 +1,10 @@
 div {
-  color: #ededed;
+  /* color: #0000006d; */
 }
 
 /* Customize the scrollbar track */
 ::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */
-}
-
-.hidden-scrollbar::-webkit-scrollbar {
-  width: 0px;
 }
 
 /* Customize the scrollbar thumb */
@@ -19,10 +15,30 @@ div {
 }
 
 /* Change the color when hovering over the scrollbar thumb */
+
 ::-webkit-scrollbar-thumb:hover {
   background: #717171;
 }
 
 ::-webkit-scrollbar-track {
   background: #0f0f0f; /* Change this color to the desired color */
+}
+
+/* Hide scrollbar on mobile screens */
+@media (max-width: 767px) {
+  .hidden-scrollbar {
+    overflow-x: auto;
+    /* hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* hide scrollbar for chrome, safari and opera */
+  .hidden-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px; /* Width of the scrollbar */
+  }
 }

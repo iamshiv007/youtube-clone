@@ -7,7 +7,6 @@ const YoutubeContext = createContext()
 export default YoutubeContext
 
 export const ContextProvider = ({ children }) => {
-  const [homeVideos, setHomeVideos] = useState([]);
   const [trendingVideos, setTrendingVideos] = useState([]);
   const [searchVideos, setSearchVideos] = useState([]);
   const [trendingVideosLength, setTrendingVideosLength] = useState(15);
@@ -15,37 +14,7 @@ export const ContextProvider = ({ children }) => {
   const [country, setCountry] = useState("IN");
   const [isLoading, setIsLoading] = useState(false);
 
-  // 1. Home Videos
-  const getHomeVideos = async () => {
-    // setIsLoading(true)
-
-    // const options = {
-    //   method: "GET",
-    //   url: "https://youtube-v31.p.rapidapi.com/search",
-    //   params: {
-    //     regionCode: country,
-    //     part: "id,snippet",
-    //     type: "video",
-    //     maxResults: "50",
-    //     videoDuration: "medium"
-    //   },
-    //   headers: {
-    //     "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
-    //     "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com"
-    //   }
-    // };
-
-    // try {
-    //   const response = await axios.request(options);
-    //   setHomeVideos(response.data.items) /
-    //     setIsLoading(false)
-    // } catch (error) {
-    //   errorHandling(error)
-    // }
-  }
-
-
-  // 2. Autocomplete Suggetions
+  // 1. Autocomplete Suggetions
   const generateAutocomplete = async (query) => {
     try {
       const res = await axios.get(`https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&client=firefox&q=${query}`)
@@ -56,7 +25,7 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
-  // 3. Trending Videos
+  // 2. Trending Videos
   const getTrendingVideos = async () => {
     setIsLoading(true)
     try {
@@ -78,7 +47,7 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
-  // 4. Search videos
+  // 3. Search videos
   const getSearchVideos = async (query) => {
     setIsLoading(true)
 
@@ -120,7 +89,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   return (
-    <YoutubeContext.Provider value={{ isLoading, homeVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, getSearchVideos, searchVideos, setIsLoading, getHomeVideos, trendingVideosLength }}>
+    <YoutubeContext.Provider value={{ isLoading, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, country, setCountry, getSearchVideos, searchVideos, setIsLoading, trendingVideosLength }}>
       {children}
     </YoutubeContext.Provider>
   )

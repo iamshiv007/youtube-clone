@@ -173,7 +173,7 @@ const TrendingList = () => {
           }
         >
           <>
-            <Grid gap={5} padding={"30px"}>
+            <Grid gap={5} paddingTop={"5px"}>
               {trendingVideos &&
                 trendingVideos.map((video) => (
                   <HomeVideoCard

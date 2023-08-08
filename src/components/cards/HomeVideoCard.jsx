@@ -17,7 +17,7 @@ const HomeVideoCard = ({
     <NavLink to={`/video/${videoId}/${channelId}`}>
       <Box>
         <Box
-          borderRadius={"8px"}
+          borderRadius={{ base: "0px", sm: "0px", md: "8px" }}
           position={"relative"}
           backgroundRepeat={"no-repeat"}
           height={"180px"}
@@ -40,7 +40,7 @@ const HomeVideoCard = ({
           </Text>
         </Box>
 
-        <Flex marginTop={"10px"} gap={3}>
+        <Flex padding={{ base: "10px", sm: "10px", md: "10px 0 0 0" }} gap={3}>
           {avatar ? (
             <Image
               height={"35px"}
@@ -62,7 +62,7 @@ const HomeVideoCard = ({
               {channelName}
             </Text>
             <Text fontSize={"xs"}>
-              {views ? `${views } views` : ""} {postTime || ""}
+              {views ? `${views} views` : ""} {postTime || ""}
             </Text>
           </Box>
         </Flex>
