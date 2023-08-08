@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Grid } from "@chakra-ui/react";
+import { Grid, Text } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -18,10 +18,12 @@ const TrendingList = () => {
     isLoading,
     setIsLoading,
     setTrendingVideos,
+    trendingVideosLength,
   } = useContext(YoutubeContext);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setNextPageToken("");
     getTrendingVideos();
   }, [country]);
 
@@ -32,13 +34,13 @@ const TrendingList = () => {
     try {
       setIsLoading(true);
       const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=10&pageToken=${nextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=15&pageToken=${nextPageToken}`
       );
 
       const newNextPageToken = res.data.nextPageToken;
 
       const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=10&pageToken=${newNextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=15&pageToken=${newNextPageToken}`
       );
       setTrendingVideos((prevTrendingVideos) => [
         ...prevTrendingVideos,
@@ -57,7 +59,9 @@ const TrendingList = () => {
       <InfiniteScroll
         dataLength={trendingVideos.length} //This is important field to render the next data
         next={fetchMoreData}
-        hasMore={true}
+        hasMore={
+          trendingVideosLength > trendingVideos.length + 1 ? true : false
+        }
         loader={
           isLoading ? (
             <Grid gap={5} padding={"30px"}>
@@ -72,9 +76,9 @@ const TrendingList = () => {
           )
         }
         endMessage={
-          <p style={{ textAlign: "center" }}>
-            <b>Yay! You have seen it all</b>
-          </p>
+          <Text color={"white"} textAlign={"center"} padding={"20px"}>
+            <b>👍 Yay! You have seen it all</b>
+          </Text>
         }
       >
         <>
@@ -106,9 +110,15 @@ const TrendingList = () => {
                   channelName={video.snippet.channelTitle}
                 />
               ))}
-            <SearchSkeleton />
-            <SearchSkeleton />
-            <SearchSkeleton />
+            {trendingVideosLength > trendingVideos.length + 1 ? (
+              <>
+                <SearchSkeleton />
+                <SearchSkeleton />
+                <SearchSkeleton />
+              </>
+            ) : (
+              ""
+            )}
           </Grid>
         </>
       </InfiniteScroll>

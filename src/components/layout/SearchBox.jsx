@@ -41,7 +41,6 @@ const SearchBox = () => {
         setShowSuggestion(true);
       } else {
         // setShowSuggestion(false);
-        console.log("45");
       }
     };
 
@@ -64,7 +63,6 @@ const SearchBox = () => {
 
   const searchFun = () => {
     navigate(`/?query=${searchText}`);
-    console.log(searchText);
   };
 
   return (

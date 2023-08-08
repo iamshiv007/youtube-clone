@@ -4,13 +4,13 @@ import axios from "axios";
 import { errorhandling } from "../utils/utils";
 
 const YoutubeContext = createContext()
-
 export default YoutubeContext
 
 export const ContextProvider = ({ children }) => {
   const [homeVideos, setHomeVideos] = useState([]);
   const [trendingVideos, setTrendingVideos] = useState([]);
   const [searchVideos, setSearchVideos] = useState([]);
+  const [trendingVideosLength, setTrendingVideosLength] = useState(15);
   const [autocomplete, setAutocomplete] = useState([]);
   const [country, setCountry] = useState("IN");
   const [isLoading, setIsLoading] = useState(false);
@@ -60,8 +60,9 @@ export const ContextProvider = ({ children }) => {
   const getTrendingVideos = async () => {
     setIsLoading(true)
     try {
-      const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=10`)
+      const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15`)
       setTrendingVideos(res.data.items)
+      setTrendingVideosLength(res.data.pageInfo.totalResults)
       setIsLoading(false)
     } catch (error) {
       errorhandling(error)
@@ -71,6 +72,7 @@ export const ContextProvider = ({ children }) => {
   // 4. Search videos
   const getSearchVideos = async (query) => {
     setIsLoading(true)
+    console.log(process.env.REACT_APP_RAPId_API_KEY)
 
     const options = {
       method: "GET",
@@ -79,7 +81,9 @@ export const ContextProvider = ({ children }) => {
         q: query,
         part: "snippet,id",
         regionCode: country,
-        maxResults: "50"
+        maxResults: "50",
+        type: "video",
+        videoDuration: "medium"
       },
       headers: {
         "X-RapidAPI-Key": process.env.REACT_APP_RAPId_API_KEY,
@@ -93,14 +97,22 @@ export const ContextProvider = ({ children }) => {
       setIsLoading(false)
       setSearchVideos(response.data.items)
     } catch (error) {
-      errorhandling(error)
+      alert("Rapid api not working using alternate api")
+
+      try {
+        const response2 = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=business&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=50&type=video&videoDuration=medium`)
+        console.log(response2.data);
+        setIsLoading(false)
+        setSearchVideos(response2.data.items)
+      } catch (error) {
+        errorhandling(error)
+      }
+
     }
   }
 
-
-
   return (
-    <YoutubeContext.Provider value={{ isLoading, homeVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, getSearchVideos, searchVideos, setIsLoading, getHomeVideos }}>
+    <YoutubeContext.Provider value={{ isLoading, homeVideos, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, setHomeVideos, country, setCountry, getSearchVideos, searchVideos, setIsLoading, getHomeVideos, trendingVideosLength }}>
       {children}
     </YoutubeContext.Provider>
   )
