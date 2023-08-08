@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { Grid } from "@chakra-ui/react";
 import numeral from "numeral";
 import { formatDistanceToNow } from "date-fns";
@@ -11,21 +10,15 @@ const RelatedList = () => {
   const { trendingVideos, country, getTrendingVideos } =
     useContext(YoutubeContext);
 
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
-  // Access query parameters
-  const category = queryParams.get("category");
-
   useEffect(() => {
+    window.scrollTo(0, 0);
     getTrendingVideos();
-  }, [country, getTrendingVideos]);
+  }, [country]);
 
   return (
     <>
       <Grid gap={5} padding={"0px"}>
-        {category &&
-          trendingVideos &&
+        {trendingVideos &&
           trendingVideos.map((video) => (
             <RelatedVideoCard
               videoId={video.id}

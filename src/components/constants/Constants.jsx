@@ -16,7 +16,7 @@ import { RiKakaoTalkLine } from "react-icons/ri";
 
 export const sidebarData = [
   { name: "Trending", icon: <AiTwotoneFire /> },
-  { name: "Podcasts", icon: <RiKakaoTalkLine /> },
+  { name: "Adveture", icon: <RiKakaoTalkLine /> },
   { name: "Programming and Coding", icon: <BsCodeSlash /> },
   { name: "Science and Fact", icon: <MdScience /> },
   { name: "Technology and Space", icon: <FaSpaceAwesome /> },

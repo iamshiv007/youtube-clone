@@ -68,10 +68,12 @@ const Video = () => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     getVideoDetails();
+  }, [videoId]);
+  
+  useEffect(() => {
     getChannelDetails();
-  }, [channelId, videoId]);
+  }, [channelId]);
 
   // Video Options
   const opts = {

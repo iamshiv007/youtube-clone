@@ -65,7 +65,7 @@ export const ContextProvider = ({ children }) => {
       setTrendingVideosLength(res.data.pageInfo.totalResults)
       setIsLoading(false)
     } catch (error) {
-      
+
       try {
         const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15`)
         setTrendingVideos(res.data.items)
@@ -81,7 +81,6 @@ export const ContextProvider = ({ children }) => {
   // 4. Search videos
   const getSearchVideos = async (query) => {
     setIsLoading(true)
-    console.log(process.env.REACT_APP_RAPId_API_KEY)
 
     const options = {
       method: "GET",
@@ -106,16 +105,16 @@ export const ContextProvider = ({ children }) => {
       setIsLoading(false)
       setSearchVideos(response.data.items)
     } catch (error) {
-      alert("Rapid api not working using alternate api")
+      // alert("Rapid api not working using alternate api")
 
-      try {
-        const response2 = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=business&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=50&type=video&videoDuration=medium`)
-        console.log(response2.data);
-        setIsLoading(false)
-        setSearchVideos(response2.data.items)
-      } catch (error) {
-        errorHandling(error)
-      }
+      // try {
+      //   const response2 = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=business&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=50&type=video&videoDuration=medium`)
+      //   console.log(response2.data);
+      //   setIsLoading(false)
+      //   setSearchVideos(response2.data.items)
+      // } catch (error) {
+      errorHandling(error)
+      // }
 
     }
   }
