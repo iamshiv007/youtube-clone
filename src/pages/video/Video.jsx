@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import YouTube from "react-youtube";
 import {
@@ -20,36 +20,58 @@ import { formatDistanceToNow } from "date-fns";
 
 import Header from "../../components/layout/Header";
 import RelatedList from "../../components/list/RelatedList.jsx";
+import { errorHandling } from "../../utils/utils";
 
 const Video = () => {
   const [videoDetails, setvideoDetails] = useState({});
   const [channelDetails, setChannelDetails] = useState({});
   const { videoId, channelId } = useParams();
 
-  const getVideoDetails = useCallback(async () => {
-    const res = await axios.get(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc`
-    );
-    setvideoDetails(res.data.items[0]);
-    console.log(res.data);
-  }, [videoId]);
+  const getVideoDetails = async () => {
+    try {
+      const res = await axios.get(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`
+      );
+      setvideoDetails(res.data.items[0]);
+      console.log(res.data);
+    } catch (error) {
+      try {
+        const res = await axios.get(
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`
+        );
+        setvideoDetails(res.data.items[0]);
+        console.log(res.data);
+      } catch (error) {
+        errorHandling(error);
+      }
+    }
+  };
 
-  const getChannelDetails = useCallback(async () => {
-    const res2 = await axios.get(
-      `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc`
-    );
-    console.log(res2.data);
-    setChannelDetails(res2.data.items[0]);
-  }, [channelId]);
+  const getChannelDetails = async () => {
+    try {
+      const res2 = await axios.get(
+        `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`
+      );
+      console.log(res2.data);
+      setChannelDetails(res2.data.items[0]);
+    } catch (error) {
+      try {
+        const res2 = await axios.get(
+          `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`
+        );
+        console.log(res2.data);
+        setChannelDetails(res2.data.items[0]);
+      } catch (error) {
+        errorHandling(error);
+      }
+    }
+  };
 
   useEffect(() => {
-    const getVideoAndChannelDetails = async () => {
-      await getVideoDetails();
-      await getChannelDetails();
-    };
-
-    getVideoAndChannelDetails();
-  }, [channelId, videoId, getVideoDetails, getChannelDetails]);
+    window.scrollTo(0, 0);
+    getVideoDetails();
+    getChannelDetails();
+  }, [channelId, videoId]);
 
   // Video Options
   const opts = {

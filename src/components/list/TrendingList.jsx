@@ -7,7 +7,7 @@ import axios from "axios";
 
 import YoutubeContext from "../../context/YoutubeContext";
 import SearchSkeleton from "../layout/SearchSkeleton";
-import { errorhandling } from "../../utils/utils";
+import { errorHandling } from "../../utils/utils";
 import SearchVideoCard from "../cards/SearchVideoCard";
 
 const TrendingList = () => {
@@ -50,7 +50,27 @@ const TrendingList = () => {
 
       setNextPageToken(() => newNextPageToken);
     } catch (error) {
-      errorhandling(error);
+      try {
+        setIsLoading(true);
+        const res = await axios.get(
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15&pageToken=${nextPageToken}`
+        );
+
+        const newNextPageToken = res.data.nextPageToken;
+
+        const res2 = await axios.get(
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15&pageToken=${newNextPageToken}`
+        );
+        setTrendingVideos((prevTrendingVideos) => [
+          ...prevTrendingVideos,
+          ...res2.data.items,
+        ]);
+        setIsLoading(false);
+
+        setNextPageToken(() => newNextPageToken);
+      } catch (error) {
+        errorHandling(error);
+      }
     }
   };
 

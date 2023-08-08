@@ -1,4 +1,4 @@
-export const errorhandling = (error) => {
+export const errorHandling = (error) => {
   console.log(error);
 
   if (error.isAxiosError) {

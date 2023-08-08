@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
 
-import { errorhandling } from "../utils/utils";
+import { errorHandling } from "../utils/utils";
 
 const YoutubeContext = createContext()
 export default YoutubeContext
@@ -40,7 +40,7 @@ export const ContextProvider = ({ children }) => {
       setHomeVideos(response.data.items) /
         setIsLoading(false)
     } catch (error) {
-      errorhandling(error)
+      errorHandling(error)
     }
   }
 
@@ -52,7 +52,7 @@ export const ContextProvider = ({ children }) => {
       setAutocomplete(res.data[1])
 
     } catch (error) {
-      errorhandling(error)
+      errorHandling(error)
     }
   }
 
@@ -65,7 +65,16 @@ export const ContextProvider = ({ children }) => {
       setTrendingVideosLength(res.data.pageInfo.totalResults)
       setIsLoading(false)
     } catch (error) {
-      errorhandling(error)
+      
+      try {
+        const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15`)
+        setTrendingVideos(res.data.items)
+        setTrendingVideosLength(res.data.pageInfo.totalResults)
+        setIsLoading(false)
+      } catch (error) {
+        errorHandling(error)
+      }
+
     }
   }
 
@@ -105,7 +114,7 @@ export const ContextProvider = ({ children }) => {
         setIsLoading(false)
         setSearchVideos(response2.data.items)
       } catch (error) {
-        errorhandling(error)
+        errorHandling(error)
       }
 
     }
