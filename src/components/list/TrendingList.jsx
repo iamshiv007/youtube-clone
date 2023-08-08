@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Grid, Text } from "@chakra-ui/react";
+import { Box, Grid, Text } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -9,6 +9,8 @@ import YoutubeContext from "../../context/YoutubeContext";
 import SearchSkeleton from "../layout/SearchSkeleton";
 import { errorHandling } from "../../utils/utils";
 import SearchVideoCard from "../cards/SearchVideoCard";
+import HomeSkeleton from "../layout/HomeSkeleton";
+import HomeVideoCard from "../cards/HomeVideoCard";
 
 const TrendingList = () => {
   const {
@@ -34,13 +36,13 @@ const TrendingList = () => {
     try {
       setIsLoading(true);
       const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15&pageToken=${nextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}x&maxResults=15&pageToken=${nextPageToken}`
       );
 
       const newNextPageToken = res.data.nextPageToken;
 
       const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15&pageToken=${newNextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}x&maxResults=15&pageToken=${newNextPageToken}`
       );
       setTrendingVideos((prevTrendingVideos) => [
         ...prevTrendingVideos,
@@ -53,13 +55,13 @@ const TrendingList = () => {
       try {
         setIsLoading(true);
         const res = await axios.get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15&pageToken=${nextPageToken}`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}x&maxResults=15&pageToken=${nextPageToken}`
         );
 
         const newNextPageToken = res.data.nextPageToken;
 
         const res2 = await axios.get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15&pageToken=${newNextPageToken}`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}x&maxResults=15&pageToken=${newNextPageToken}`
         );
         setTrendingVideos((prevTrendingVideos) => [
           ...prevTrendingVideos,
@@ -76,72 +78,142 @@ const TrendingList = () => {
 
   return (
     <>
-      <InfiniteScroll
-        dataLength={trendingVideos.length} //This is important field to render the next data
-        next={fetchMoreData}
-        hasMore={
-          trendingVideosLength > trendingVideos.length + 1 ? true : false
-        }
-        loader={
-          isLoading ? (
-            <Grid gap={5} padding={"30px"}>
-              <>
-                <SearchSkeleton />
-                <SearchSkeleton />
-                <SearchSkeleton />
-              </>
-            </Grid>
-          ) : (
-            ""
-          )
-        }
-        endMessage={
-          <Text color={"white"} textAlign={"center"} padding={"20px"}>
-            <b>👍 Yay! You have seen it all</b>
-          </Text>
-        }
-      >
-        <>
-          <Grid gap={5} padding={"30px"}>
-            {trendingVideos &&
-              trendingVideos.map((video) => (
-                <SearchVideoCard
-                  videoId={video.id}
-                  channelId={video?.snippet?.channelId}
-                  duration={
-                    video.contentDetails?.duration
-                      ? durationConverter(video.contentDetails?.duration)
-                      : ""
-                  }
-                  key={video.id}
-                  title={
-                    video.snippet?.title
-                      ? formateTitle(convertHtmlEntities(video.snippet.title))
-                      : ""
-                  }
-                  thumbnail={
-                    video?.snippet.thumbnails?.maxres?.url ||
-                    video?.snippet.thumbnails?.standard?.url ||
-                    ""
-                  }
-                  avatar={""}
-                  postTime={timeConverter(video.snippet.publishedAt)}
-                  views={viewsConverter(video.statistics.viewCount)}
-                  channelName={video.snippet.channelTitle}
-                />
-              ))}
-            {trendingVideosLength > trendingVideos.length + 1 ? (
-              <>
-                <SearchSkeleton />
-                <SearchSkeleton />
-                <SearchSkeleton />
-              </>
+      <Box display={{ base: "none", sm: "none", md: "block" }}>
+        <InfiniteScroll
+          dataLength={trendingVideos.length} //This is important field to render the next data
+          next={fetchMoreData}
+          hasMore={
+            trendingVideosLength > trendingVideos.length + 1 ? true : false
+          }
+          loader={
+            isLoading ? (
+              <Grid gap={5} padding={"30px"}>
+                <>
+                  <SearchSkeleton />
+                  <SearchSkeleton />
+                  <SearchSkeleton />
+                </>
+              </Grid>
             ) : (
               ""
-            )}
-          </Grid>
-        </>
-      </InfiniteScroll>
+            )
+          }
+          endMessage={
+            <Text color={"white"} textAlign={"center"} padding={"20px"}>
+              <b>👍 Yay! You have seen it all</b>
+            </Text>
+          }
+        >
+          <>
+            <Grid gap={5} padding={"30px"}>
+              {trendingVideos &&
+                trendingVideos.map((video) => (
+                  <SearchVideoCard
+                    videoId={video.id}
+                    channelId={video?.snippet?.channelId}
+                    duration={
+                      video.contentDetails?.duration
+                        ? durationConverter(video.contentDetails?.duration)
+                        : ""
+                    }
+                    key={video.id}
+                    title={
+                      video.snippet?.title
+                        ? formateTitle(convertHtmlEntities(video.snippet.title))
+                        : ""
+                    }
+                    thumbnail={
+                      video?.snippet.thumbnails?.maxres?.url ||
+                      video?.snippet.thumbnails?.standard?.url ||
+                      ""
+                    }
+                    avatar={""}
+                    postTime={timeConverter(video.snippet.publishedAt)}
+                    views={viewsConverter(video.statistics.viewCount)}
+                    channelName={video.snippet.channelTitle}
+                  />
+                ))}
+              {trendingVideosLength > trendingVideos.length + 1 ? (
+                <>
+                  <SearchSkeleton />
+                  <SearchSkeleton />
+                  <SearchSkeleton />
+                </>
+              ) : (
+                ""
+              )}
+            </Grid>
+          </>
+        </InfiniteScroll>
+      </Box>
+      <Box display={{ base: "block", sm: "block", md: "none" }}>
+        <InfiniteScroll
+          dataLength={trendingVideos.length} //This is important field to render the next data
+          next={fetchMoreData}
+          hasMore={
+            trendingVideosLength > trendingVideos.length + 1 ? true : false
+          }
+          loader={
+            isLoading ? (
+              <Grid gap={5} padding={"20px"}>
+                <>
+                  <HomeSkeleton />
+                  <HomeSkeleton />
+                  <HomeSkeleton />
+                </>
+              </Grid>
+            ) : (
+              ""
+            )
+          }
+          endMessage={
+            <Text color={"white"} textAlign={"center"} padding={"20px"}>
+              <b>👍 Yay! You have seen it all</b>
+            </Text>
+          }
+        >
+          <>
+            <Grid gap={5} padding={"30px"}>
+              {trendingVideos &&
+                trendingVideos.map((video) => (
+                  <HomeVideoCard
+                    videoId={video.id}
+                    channelId={video?.snippet?.channelId}
+                    duration={
+                      video.contentDetails?.duration
+                        ? durationConverter(video.contentDetails?.duration)
+                        : ""
+                    }
+                    key={video.id}
+                    title={
+                      video.snippet?.title
+                        ? formateTitle(convertHtmlEntities(video.snippet.title))
+                        : ""
+                    }
+                    thumbnail={
+                      video?.snippet.thumbnails?.maxres?.url ||
+                      video?.snippet.thumbnails?.standard?.url ||
+                      ""
+                    }
+                    avatar={""}
+                    postTime={timeConverter(video.snippet.publishedAt)}
+                    views={viewsConverter(video.statistics.viewCount)}
+                    channelName={video.snippet.channelTitle}
+                  />
+                ))}
+              {trendingVideosLength > trendingVideos.length + 1 ? (
+                <>
+                  <HomeSkeleton />
+                  <HomeSkeleton />
+                  <HomeSkeleton />
+                </>
+              ) : (
+                ""
+              )}
+            </Grid>
+          </>
+        </InfiniteScroll>
+      </Box>
     </>
   );
 };

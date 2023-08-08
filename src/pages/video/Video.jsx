@@ -30,14 +30,14 @@ const Video = () => {
   const getVideoDetails = async () => {
     try {
       const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}x`
       );
       setvideoDetails(res.data.items[0]);
       console.log(res.data);
     } catch (error) {
       try {
         const res = await axios.get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}x`
         );
         setvideoDetails(res.data.items[0]);
         console.log(res.data);
@@ -50,14 +50,14 @@ const Video = () => {
   const getChannelDetails = async () => {
     try {
       const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`
+        `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}x`
       );
       console.log(res2.data);
       setChannelDetails(res2.data.items[0]);
     } catch (error) {
       try {
         const res2 = await axios.get(
-          `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`
+          `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}x`
         );
         console.log(res2.data);
         setChannelDetails(res2.data.items[0]);

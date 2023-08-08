@@ -1,10 +1,14 @@
 div {
-  /* color:#b7b7b7 */
+  color: #ededed;
 }
 
 /* Customize the scrollbar track */
 ::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  width: 0px;
 }
 
 /* Customize the scrollbar thumb */

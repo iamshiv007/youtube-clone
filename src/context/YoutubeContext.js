@@ -17,31 +17,31 @@ export const ContextProvider = ({ children }) => {
 
   // 1. Home Videos
   const getHomeVideos = async () => {
-    setIsLoading(true)
+    // setIsLoading(true)
 
-    const options = {
-      method: "GET",
-      url: "https://youtube-v31.p.rapidapi.com/search",
-      params: {
-        regionCode: country,
-        part: "id,snippet",
-        type: "video",
-        maxResults: "50",
-        videoDuration: "medium"
-      },
-      headers: {
-        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
-        "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com"
-      }
-    };
+    // const options = {
+    //   method: "GET",
+    //   url: "https://youtube-v31.p.rapidapi.com/search",
+    //   params: {
+    //     regionCode: country,
+    //     part: "id,snippet",
+    //     type: "video",
+    //     maxResults: "50",
+    //     videoDuration: "medium"
+    //   },
+    //   headers: {
+    //     "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
+    //     "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com"
+    //   }
+    // };
 
-    try {
-      const response = await axios.request(options);
-      setHomeVideos(response.data.items) /
-        setIsLoading(false)
-    } catch (error) {
-      errorHandling(error)
-    }
+    // try {
+    //   const response = await axios.request(options);
+    //   setHomeVideos(response.data.items) /
+    //     setIsLoading(false)
+    // } catch (error) {
+    //   errorHandling(error)
+    // }
   }
 
 
@@ -60,14 +60,14 @@ export const ContextProvider = ({ children }) => {
   const getTrendingVideos = async () => {
     setIsLoading(true)
     try {
-      const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15`)
+      const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${`${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`}&maxResults=15`)
       setTrendingVideos(res.data.items)
       setTrendingVideosLength(res.data.pageInfo.totalResults)
       setIsLoading(false)
     } catch (error) {
 
       try {
-        const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15`)
+        const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${`${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`}&maxResults=15`)
         setTrendingVideos(res.data.items)
         setTrendingVideosLength(res.data.pageInfo.totalResults)
         setIsLoading(false)
@@ -94,7 +94,7 @@ export const ContextProvider = ({ children }) => {
         videoDuration: "medium"
       },
       headers: {
-        "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
+        "X-RapidAPI-Key": `${process.env.REACT_APP_RAPID_API_KEY}x`,
         "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com"
       }
     };

@@ -31,14 +31,14 @@ export const sidebarData = [
 
 export const countries = [
   {
-    name: "America",
-    countryCode: "US",
-    url: "https://t3.ftcdn.net/jpg/02/70/24/98/240_F_270249859_mf1Kyad7MO3Gb1BGvBahbB9SNttnVZO7.jpg",
-  },
-  {
     name: "India",
     countryCode: "IN",
     url: "https://t4.ftcdn.net/jpg/02/81/47/57/240_F_281475718_rlQONmoS2E3CJtv0zFv2HwZ1weGhxpff.jpg",
+  },
+  {
+    name: "America",
+    countryCode: "US",
+    url: "https://t3.ftcdn.net/jpg/02/70/24/98/240_F_270249859_mf1Kyad7MO3Gb1BGvBahbB9SNttnVZO7.jpg",
   },
   {
     name: "Germany",

@@ -23,7 +23,7 @@ const Sidebar = () => (
           <Box
             color="white"
             display="flex"
-            gap={6}
+            gap={4}
             borderRadius="5px"
             padding="5px"
             alignItems="center"
@@ -31,8 +31,7 @@ const Sidebar = () => (
             _hover={{ background: "#3a3a3a" }}
           >
             {" "}
-            <Text fontSize="2xl">{data.icon} </Text>{" "}
-            <Text fontSize={""}> {data.name}</Text>
+            <Text fontSize="2xl">{data.icon} </Text> <Text>{data.name}</Text>
           </Box>
         </NavLink>
       ))}

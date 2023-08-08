@@ -6,6 +6,7 @@ import Home from "./pages/home/Home";
 import "./App.css";
 
 function App() {
+  console.log(process.env.REACT_APP_YOUTUBE_API_GOOGLE1)
   return (
     <Fragment>
       <BrowserRouter>
