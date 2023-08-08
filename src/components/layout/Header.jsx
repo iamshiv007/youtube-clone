@@ -67,7 +67,7 @@ const Header = () => {
                 <Avatar size={"xs"} name="Coutry" src={flag} />
               </MenuButton>
               <Portal>
-                <MenuList bg={"#323232"} marginTop={"20px"}>
+                <MenuList zIndex={11} bg={"#323232"}>
                   {countries.map((country) => (
                     <MenuItem
                       bg={"#323232"}

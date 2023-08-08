@@ -100,7 +100,7 @@ export const ContextProvider = ({ children }) => {
       alert("Rapid api not working using alternate api")
 
       try {
-        const response2 = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=business&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=50&type=video&videoDuration=medium`)
+        const response2 = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=business&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=50&type=video&videoDuration=medium`)
         console.log(response2.data);
         setIsLoading(false)
         setSearchVideos(response2.data.items)

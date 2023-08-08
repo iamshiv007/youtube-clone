@@ -34,13 +34,13 @@ const TrendingList = () => {
     try {
       setIsLoading(true);
       const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=15&pageToken=${nextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15&pageToken=${nextPageToken}`
       );
 
       const newNextPageToken = res.data.nextPageToken;
 
       const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=AIzaSyCSg8WrqSPJ475M6NEebNrztvnEgSfosgc&maxResults=15&pageToken=${newNextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15&pageToken=${newNextPageToken}`
       );
       setTrendingVideos((prevTrendingVideos) => [
         ...prevTrendingVideos,
