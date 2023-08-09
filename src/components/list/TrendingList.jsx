@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Box, Grid, Text } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import numeral from "numeral";
@@ -21,28 +21,22 @@ const TrendingList = () => {
     setIsLoading,
     setTrendingVideos,
     trendingVideosLength,
+    nextPageToken,
+    setNextPageToken,
   } = useContext(YoutubeContext);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setNextPageToken("");
     getTrendingVideos();
   }, [country]);
 
-  const [nextPageToken, setNextPageToken] = useState("");
-
-  // Trending videos Scrolling
   const fetchMoreData = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15&pageToken=${nextPageToken}`
-      );
 
-      const newNextPageToken = res.data.nextPageToken;
-
+      console.log(nextPageToken);
       const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15&pageToken=${newNextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15&pageToken=${nextPageToken}`
       );
       setTrendingVideos((prevTrendingVideos) => [
         ...prevTrendingVideos,
@@ -50,18 +44,13 @@ const TrendingList = () => {
       ]);
       setIsLoading(false);
 
-      setNextPageToken(() => newNextPageToken);
+      setNextPageToken(res2.data.nextPageToken);
     } catch (error) {
       try {
         setIsLoading(true);
-        const res = await axios.get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15&pageToken=${nextPageToken}`
-        );
-
-        const newNextPageToken = res.data.nextPageToken;
-
+       
         const res2 = await axios.get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15&pageToken=${newNextPageToken}`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15&pageToken=${nextPageToken}`
         );
         setTrendingVideos((prevTrendingVideos) => [
           ...prevTrendingVideos,
@@ -69,7 +58,7 @@ const TrendingList = () => {
         ]);
         setIsLoading(false);
 
-        setNextPageToken(() => newNextPageToken);
+        setNextPageToken(res2.data.nextPageToken);
       } catch (error) {
         errorHandling(error);
       }
@@ -149,7 +138,7 @@ const TrendingList = () => {
       <Box display={{ base: "block", sm: "block", md: "none" }}>
         <InfiniteScroll
           dataLength={trendingVideos.length} //This is important field to render the next data
-          next={fetchMoreData}
+          // next={fetchMoreData}
           hasMore={
             trendingVideosLength > trendingVideos.length + 1 ? true : false
           }

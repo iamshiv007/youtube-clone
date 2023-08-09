@@ -17,14 +17,12 @@ import { MdOutlineCastConnected } from "react-icons/md";
 import { BiSearch } from "react-icons/bi";
 import { IoCompassOutline } from "react-icons/io5";
 
-import SearchBox from "./SearchBox";
 import { countries, sidebarData } from "../constants/Constants";
 import YoutubeContext from "../../context/YoutubeContext";
 
 const Header = () => {
   const { setCountry, country } = useContext(YoutubeContext);
   const [isOpen, setIsOpen] = useState(false);
-  const [isSearch, setIsSearch] = useState(false);
 
   const [flag, setFlag] = useState(
     "https://t4.ftcdn.net/jpg/02/81/47/57/240_F_281475718_rlQONmoS2E3CJtv0zFv2HwZ1weGhxpff.jpg"
@@ -60,10 +58,6 @@ const Header = () => {
             </Flex>
           </NavLink>
 
-          <Box>
-            <SearchBox isSearch={isSearch} setIsSearch={setIsSearch} />
-          </Box>
-
           <Box
             display={"flex"}
             gap={{ base: 4, sm: 4, md: 6 }}
@@ -87,12 +81,14 @@ const Header = () => {
               <BsBell />
             </Text>
             <Text
-              onClick={() => setIsSearch(true)}
+              display={{ base: "block", sm: "block", md: "none" }}
               fontSize={"xl"}
               color={"white"}
               _hover={{ cursor: "pointer" }}
             >
-              <BiSearch />
+              <NavLink to="/search/mobile">
+                <BiSearch />
+              </NavLink>
             </Text>
             <Menu>
               <MenuButton>
@@ -140,7 +136,7 @@ const Header = () => {
           align={"center"}
           size={"xs"}
           padding={"5px 10px"}
-          gap={4}
+          gap={2}
         >
           <Box
             color="white"

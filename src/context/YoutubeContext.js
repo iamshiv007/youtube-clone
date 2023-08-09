@@ -13,6 +13,7 @@ export const ContextProvider = ({ children }) => {
   const [autocomplete, setAutocomplete] = useState([]);
   const [country, setCountry] = useState("IN");
   const [isLoading, setIsLoading] = useState(false);
+  const [nextPageToken, setNextPageToken] = useState("");
 
   // 1. Autocomplete Suggetions
   const generateAutocomplete = async (query) => {
@@ -32,6 +33,7 @@ export const ContextProvider = ({ children }) => {
       const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${`${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`}&maxResults=15`)
       setTrendingVideos(res.data.items)
       setTrendingVideosLength(res.data.pageInfo.totalResults)
+      setNextPageToken(res.data.nextPageToken)
       setIsLoading(false)
     } catch (error) {
 
@@ -39,6 +41,7 @@ export const ContextProvider = ({ children }) => {
         const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${`${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`}&maxResults=15`)
         setTrendingVideos(res.data.items)
         setTrendingVideosLength(res.data.pageInfo.totalResults)
+        setNextPageToken(res.data.nextPageToken)
         setIsLoading(false)
       } catch (error) {
         errorHandling(error)
@@ -89,7 +92,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   return (
-    <YoutubeContext.Provider value={{ isLoading, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, country, setCountry, getSearchVideos, searchVideos, setIsLoading, trendingVideosLength }}>
+    <YoutubeContext.Provider value={{ nextPageToken, setNextPageToken, isLoading, generateAutocomplete, autocomplete, trendingVideos, getTrendingVideos, setTrendingVideos, country, setCountry, getSearchVideos, searchVideos, setIsLoading, trendingVideosLength }}>
       {children}
     </YoutubeContext.Provider>
   )

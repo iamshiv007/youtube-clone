@@ -1,5 +1,5 @@
 {
-  "short_name": "Youtube 2",
+  "short_name": "Youtube Clone",
   "name": "Youtube clone by Shiv",
   "description":"This is React YouTube Clone Where you can stream trending videos of different countries with infinite scrolling, you can search videos and you can choose any section in to sidebar which you want",
   "icons": [
@@ -29,8 +29,8 @@
       "sizes": "512x512"
     }
   ],
-  "background_color": "#ffffff",
-  "theme_color": "#ff0000",
+  "background_color": "#0f0f0f",
+  "theme_color": "black",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
