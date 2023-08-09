@@ -17,7 +17,7 @@ const RelatedList = () => {
 
   return (
     <>
-      <Grid gap={5} padding={"0px"}>
+      <Grid gap={5} padding={{ base: "8px", md: "0px" }}>
         {trendingVideos &&
           trendingVideos.map((video) => (
             <RelatedVideoCard

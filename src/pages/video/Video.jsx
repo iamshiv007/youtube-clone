@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import YouTube from "react-youtube";
@@ -30,14 +31,14 @@ const Video = () => {
   const getVideoDetails = async () => {
     try {
       const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}x`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`
       );
       setvideoDetails(res.data.items[0]);
       console.log(res.data);
     } catch (error) {
       try {
         const res = await axios.get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}x`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`
         );
         setvideoDetails(res.data.items[0]);
         console.log(res.data);
@@ -50,14 +51,14 @@ const Video = () => {
   const getChannelDetails = async () => {
     try {
       const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}x`
+        `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`
       );
       console.log(res2.data);
       setChannelDetails(res2.data.items[0]);
     } catch (error) {
       try {
         const res2 = await axios.get(
-          `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}x`
+          `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`
         );
         console.log(res2.data);
         setChannelDetails(res2.data.items[0]);
@@ -70,18 +71,27 @@ const Video = () => {
   useEffect(() => {
     getVideoDetails();
   }, [videoId]);
-  
+
   useEffect(() => {
     getChannelDetails();
   }, [channelId]);
 
   // Video Options
-  const opts = {
+  const opts1 = {
     height: "485",
     width: "860",
     showRelatedVideos: false,
     playerVars: {
-      autoplay: 1, // Auto-play the video
+      autoplay: 0, // Auto-play the video
+    },
+  };
+
+  const opts2 = {
+    height: "210px",
+    width: "100%",
+    showRelatedVideos: false,
+    playerVars: {
+      autoplay: 0, // Auto-play the video
     },
   };
 
@@ -92,11 +102,17 @@ const Video = () => {
         gap={5}
         minHeight={"90vh"}
         width={"100%"}
-        padding={"15px 30px"}
+        padding={{ base: "5px 0", md: "15px 30px" }}
         bg="#0f0f0f"
+        direction={{ base: "column", sm: "column", md: "row" }}
       >
-        <Box width="860px">
-          <YouTube videoId={videoId} opts={opts} />
+        <Box width={{ md: "860px" }}>
+          <Box display={{ base: "none", sm: "none", md: "block" }}>
+            <YouTube videoId={videoId} opts={opts1} />
+          </Box>
+          <Box display={{ base: "block", sm: "block", md: "none" }}>
+            <YouTube videoId={videoId} opts={opts2} />
+          </Box>
 
           <Box>
             <Text color={"white"} padding={"8px"} fontSize="22px">
@@ -126,8 +142,18 @@ const VideoDetails = ({ videoDetails, channelDetails }) => {
 
   return (
     <>
-      <Flex align={"center"} gap={5} justify={"space-between"}>
-        <Flex gap={3} alignItems={"center"}>
+      <Flex
+        direction={{ base: "column", sm: "column", md: "row" }}
+        align={{ base: "start", sm: "start", md: "center" }}
+        gap={{ md: 5 }}
+        justify={"space-between"}
+      >
+        <Flex
+          justify={{ base: "space-between" }}
+          padding={"8px"}
+          gap={3}
+          alignItems={"center"}
+        >
           <Avatar
             size={"md"}
             name={channelDetails?.snippet?.title}
@@ -147,11 +173,12 @@ const VideoDetails = ({ videoDetails, channelDetails }) => {
             fontSize="14px"
             borderRadius="20px"
             size={"sm"}
+            alignSelf={"flex-end"}
           >
             Subscribe
           </Button>
         </Flex>
-        <Flex gap={1}>
+        <Flex padding={"8px"} gap={1}>
           <Box>
             <Button
               borderRadius={"20px 0 0 20px"}
@@ -197,6 +224,7 @@ const VideoDetails = ({ videoDetails, channelDetails }) => {
             leftIcon={<LiaDownloadSolid size="20px" />}
             fontSize={"14px"}
             size={"sm"}
+            display={{ base: "none", md: "block" }}
           >
             Download
           </Button>
@@ -217,7 +245,7 @@ const VideoDetails = ({ videoDetails, channelDetails }) => {
         _hover={{ bg: "#424242", cursor: "pointer" }}
         bg={"#303030"}
         padding={"20px 15px"}
-        marginTop={"15px"}
+        margin={{ base: "15px 8px", sm: "15px 8px", md: "15px  0" }}
       >
         <Text color={"white"}>
           {viewsConverter(videoDetails?.statistics?.viewCount)} |{" "}
@@ -232,30 +260,30 @@ const VideoDetails = ({ videoDetails, channelDetails }) => {
         >
           {showMore
             ? videoDetails?.snippet?.description
-              .split(linkRegex)
-              .map((part, index) =>
-                linkRegex.test(part, index) ? (
-                  <Link color={"#007bff"} href={part} key={index}>
-                    {part}
-                  </Link>
-                ) : (
-                  part
+                .split(linkRegex)
+                .map((part, index) =>
+                  linkRegex.test(part, index) ? (
+                    <Link color={"#007bff"} href={part} key={index}>
+                      {part}
+                    </Link>
+                  ) : (
+                    part
+                  )
                 )
-              )
             : `${videoDetails?.snippet?.description
-              .split("")
-              .slice(0, 80)
-              .join("")}...`
-              .split(linkRegex)
-              .map((part, index) =>
-                linkRegex.test(part, index) ? (
-                  <Link color={"#007bff"} href={part} key={index}>
-                    {part}
-                  </Link>
-                ) : (
-                  part
-                )
-              )}
+                .split("")
+                .slice(0, 80)
+                .join("")}...`
+                .split(linkRegex)
+                .map((part, index) =>
+                  linkRegex.test(part, index) ? (
+                    <Link color={"#007bff"} href={part} key={index}>
+                      {part}
+                    </Link>
+                  ) : (
+                    part
+                  )
+                )}
         </Box>
       </Box>
     </>
