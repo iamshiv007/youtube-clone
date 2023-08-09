@@ -24,6 +24,7 @@ import YoutubeContext from "../../context/YoutubeContext";
 const Header = () => {
   const { setCountry, country } = useContext(YoutubeContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearch, setIsSearch] = useState(false);
 
   const [flag, setFlag] = useState(
     "https://t4.ftcdn.net/jpg/02/81/47/57/240_F_281475718_rlQONmoS2E3CJtv0zFv2HwZ1weGhxpff.jpg"
@@ -59,8 +60,8 @@ const Header = () => {
             </Flex>
           </NavLink>
 
-          <Box display={{ base: "none", sm: "none", md: "block" }}>
-            <SearchBox />
+          <Box>
+            <SearchBox isSearch={isSearch} setIsSearch={setIsSearch} />
           </Box>
 
           <Box
@@ -85,7 +86,12 @@ const Header = () => {
             <Text fontSize={"xl"} color={"white"}>
               <BsBell />
             </Text>
-            <Text fontSize={"xl"} color={"white"}>
+            <Text
+              onClick={() => setIsSearch(true)}
+              fontSize={"xl"}
+              color={"white"}
+              _hover={{ cursor: "pointer" }}
+            >
               <BiSearch />
             </Text>
             <Menu>
@@ -95,14 +101,6 @@ const Header = () => {
                   size={"xs"}
                   name="Coutry"
                   src={flag}
-                />
-                <Avatar
-                  display={{ base: "block", sm: "block", md: "none" }}
-                  size={"xs"}
-                  name="Avatar"
-                  src={
-                    "https://cdn-icons-png.flaticon.com/128/2202/2202112.png"
-                  }
                 />
               </MenuButton>
               <Portal>
@@ -124,6 +122,12 @@ const Header = () => {
                 </MenuList>
               </Portal>
             </Menu>
+            <Avatar
+              display={{ base: "block", sm: "block", md: "none" }}
+              size={"xs"}
+              name="Avatar"
+              src={"https://cdn-icons-png.flaticon.com/128/2202/2202112.png"}
+            />
           </Box>
         </Flex>
       </Box>

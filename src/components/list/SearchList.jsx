@@ -25,7 +25,12 @@ const SearchVideoList = () => {
   return (
     <Fragment>
       <Grid
-        gridTemplateColumns={{ base: "1fr", sm: "1fr", md: "1fr 1fr 1fr" }}
+        gridTemplateColumns={{
+          base: "1fr",
+          sm: "1fr",
+          md: "1fr 1fr",
+          lg: "1fr 1fr 1fr",
+        }}
         gap={5}
         width="100%"
         padding={{ base: "0px", sm: "0px", md: "30px" }}
