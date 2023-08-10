@@ -114,7 +114,7 @@ const Video = () => {
           </Box>
           <Box
             position={"sticky"}
-            top={"12vh"}
+            top={"0"}
             display={{ base: "block", sm: "block", md: "none" }}
             zIndex={13}
           >
