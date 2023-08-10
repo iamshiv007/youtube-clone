@@ -1,12 +1,13 @@
 import React, { useContext, useEffect } from "react";
-import { Grid } from "@chakra-ui/react";
+import { Grid, Box } from "@chakra-ui/react";
 import numeral from "numeral";
 import { formatDistanceToNow } from "date-fns";
 
 import RelatedVideoCard from "../cards/RelatedVideoCard";
+import HomeVideoCard from "../cards/HomeVideoCard";
 import YoutubeContext from "../../context/YoutubeContext";
 
-const RelatedList = () => {
+const RelatedList = ({ videoId }) => {
   const { trendingVideos, country, getTrendingVideos } =
     useContext(YoutubeContext);
 
@@ -17,34 +18,70 @@ const RelatedList = () => {
 
   return (
     <>
-      <Grid gap={5} padding={{ base: "8px", md: "0px" }}>
-        {trendingVideos &&
-          trendingVideos.map((video) => (
-            <RelatedVideoCard
-              videoId={video.id}
-              channelId={video?.snippet?.channelId}
-              duration={
-                video.contentDetails?.duration
-                  ? durationConverter(video.contentDetails?.duration)
-                  : ""
-              }
-              key={video.id}
-              title={
-                video.snippet?.title
-                  ? formateTitle(convertHtmlEntities(video.snippet.title))
-                  : ""
-              }
-              thumbnail={
-                video?.snippet.thumbnails?.maxres?.url ||
-                video?.snippet.thumbnails?.standard?.url ||
-                ""
-              }
-              postTime={timeConverter(video.snippet.publishedAt)}
-              views={viewsConverter(video.statistics.viewCount)}
-              channelName={video.snippet.channelTitle}
-            />
-          ))}
-      </Grid>
+      <Box display={{ base: "none", sm: "none", md: "block" }}>
+        <Grid gap={5} padding={{ base: "8px", md: "0px" }}>
+          {trendingVideos &&
+            trendingVideos
+              .filter((video) => video.id !== videoId)
+              .map((video) => (
+                <RelatedVideoCard
+                  videoId={video.id}
+                  channelId={video?.snippet?.channelId}
+                  duration={
+                    video.contentDetails?.duration
+                      ? durationConverter(video.contentDetails?.duration)
+                      : ""
+                  }
+                  key={video.id}
+                  title={
+                    video.snippet?.title
+                      ? formateTitle(convertHtmlEntities(video.snippet.title))
+                      : ""
+                  }
+                  thumbnail={
+                    video?.snippet.thumbnails?.maxres?.url ||
+                    video?.snippet.thumbnails?.standard?.url ||
+                    ""
+                  }
+                  postTime={timeConverter(video.snippet.publishedAt)}
+                  views={viewsConverter(video.statistics.viewCount)}
+                  channelName={video.snippet.channelTitle}
+                />
+              ))}
+        </Grid>
+      </Box>
+      <Box display={{ base: "block", sm: "block", md: "none" }}>
+        <Grid gap={5} padding={{ base: "8px", md: "0px" }}>
+          {trendingVideos &&
+            trendingVideos
+              .filter((video) => video.id !== videoId)
+              .map((video) => (
+                <HomeVideoCard
+                  videoId={video.id}
+                  channelId={video?.snippet?.channelId}
+                  duration={
+                    video.contentDetails?.duration
+                      ? durationConverter(video.contentDetails?.duration)
+                      : ""
+                  }
+                  key={video.id}
+                  title={
+                    video.snippet?.title
+                      ? formateTitle(convertHtmlEntities(video.snippet.title))
+                      : ""
+                  }
+                  thumbnail={
+                    video?.snippet.thumbnails?.maxres?.url ||
+                    video?.snippet.thumbnails?.standard?.url ||
+                    ""
+                  }
+                  postTime={timeConverter(video.snippet.publishedAt)}
+                  views={viewsConverter(video.statistics.viewCount)}
+                  channelName={video.snippet.channelTitle}
+                />
+              ))}
+        </Grid>
+      </Box>
     </>
   );
 };

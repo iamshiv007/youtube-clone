@@ -10,6 +10,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { MdKeyboardVoice } from "react-icons/md";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { debounce } from "lodash";
 
 import YoutubeContext from "../../context/YoutubeContext";
 
@@ -19,14 +20,9 @@ const SearchBox = () => {
   const [showSuggestion, setShowSuggestion] = useState(false);
   const inputRef = useRef();
 
-  const generateAutocompleteFun = (query) => {
-    var timer;
-
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      generateAutocomplete(query);
-    }, 800);
-  };
+  const generateAutocompleteFun = debounce((query) => {
+    generateAutocomplete(query);
+  }, 800);
 
   useEffect(() => {
     const handleMouseDown = (event) => {
@@ -161,6 +157,3 @@ const AutoSuggestion = ({ autocomplete }) => (
     )}
   </>
 );
-
-
-

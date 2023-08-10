@@ -18,8 +18,9 @@ export const ContextProvider = ({ children }) => {
   // 1. Autocomplete Suggetions
   const generateAutocomplete = async (query) => {
     try {
-      const res = await axios.get(`https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&client=firefox&q=${query}`)
-      setAutocomplete(res.data[1])
+      const res = await axios.get(`https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&num=10&q=${query}`)
+      console.log(JSON.parse(res.data.split(/\(|\)/)[1])[1].map((arr) => arr[0]))
+      setAutocomplete(JSON.parse(res.data.split(/\(|\)/)[1])[1].map((arr) => arr[0]))
 
     } catch (error) {
       errorHandling(error)

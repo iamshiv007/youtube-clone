@@ -87,7 +87,7 @@ const Video = () => {
   };
 
   const opts2 = {
-    height: "210px",
+    height: "240px",
     width: "100%",
     showRelatedVideos: false,
     playerVars: {
@@ -110,7 +110,12 @@ const Video = () => {
           <Box display={{ base: "none", sm: "none", md: "block" }}>
             <YouTube videoId={videoId} opts={opts1} />
           </Box>
-          <Box display={{ base: "block", sm: "block", md: "none" }}>
+          <Box
+            position={"sticky"}
+            top={"12vh"}
+            display={{ base: "block", sm: "block", md: "none" }}
+            zIndex={13}
+          >
             <YouTube videoId={videoId} opts={opts2} />
           </Box>
 
@@ -124,10 +129,14 @@ const Video = () => {
               channelDetails={channelDetails}
             />
           </Box>
+
+          <Box display={{ base: "block", sm: "block", md: "none" }}>
+            <RelatedList videoId={videoId} />
+          </Box>
         </Box>
 
-        <Box>
-          <RelatedList />
+        <Box display={{ base: "none", sm: "none", md: "block" }}>
+          <RelatedList videoId={videoId} />
         </Box>
       </Flex>
     </>

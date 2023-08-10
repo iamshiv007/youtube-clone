@@ -10,6 +10,7 @@ import {
 import { BiArrowBack, BiSearch } from "react-icons/bi";
 import { MdKeyboardVoice } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
+import { debounce } from "lodash";
 
 import YoutubeContext from "../../context/YoutubeContext";
 
@@ -17,13 +18,9 @@ const MobileSearch = () => {
   const { generateAutocomplete, autocomplete } = useContext(YoutubeContext);
   const [searchText, setSearchText] = useState("");
 
-  const generateAutocompleteFun = (query) => {
-    var timer;
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      generateAutocomplete(query);
-    }, 800);
-  };
+  const generateAutocompleteFun = debounce((query) => {
+    generateAutocomplete(query);
+  }, 800);
 
   const navigate = useNavigate();
 

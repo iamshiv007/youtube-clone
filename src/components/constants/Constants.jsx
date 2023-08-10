@@ -7,16 +7,15 @@ import {
   MdScience,
   MdFastfood,
 } from "react-icons/md";
-import { BiCameraMovie } from "react-icons/bi";
+import { BiCameraMovie, BiMoviePlay } from "react-icons/bi";
 import { GiBrain } from "react-icons/gi";
 import { FaSpaceAwesome } from "react-icons/fa6";
 import { BsCodeSlash } from "react-icons/bs";
 import { FaUserTie } from "react-icons/fa";
-import { RiKakaoTalkLine } from "react-icons/ri";
 
 export const sidebarData = [
   { name: "Trending", icon: <AiTwotoneFire /> },
-  { name: "Adveture", icon: <RiKakaoTalkLine /> },
+  { name: "Adveture and Movies", icon: <BiMoviePlay /> },
   { name: "Programming and Coding", icon: <BsCodeSlash /> },
   { name: "Science and Fact", icon: <MdScience /> },
   { name: "Technology and Space", icon: <FaSpaceAwesome /> },
