@@ -97,7 +97,9 @@ const Video = () => {
 
   return (
     <>
-      <Header />
+      <Box display={{ base: "none", sm: "none", md: "block" }}>
+        <Header />
+      </Box>
       <Flex
         gap={5}
         minHeight={"90vh"}

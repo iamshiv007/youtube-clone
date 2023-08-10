@@ -23,7 +23,28 @@ export const ContextProvider = ({ children }) => {
       setAutocomplete(JSON.parse(res.data.split(/\(|\)/)[1])[1].map((arr) => arr[0]))
 
     } catch (error) {
-      errorHandling(error)
+      const options = {
+
+        method: "GET",
+        url: "https://youtube-data8.p.rapidapi.com/auto-complete/",
+        params: {
+          q: query,
+          hl: "en",
+          gl: "US"
+        },
+        headers: {
+          "X-RapidAPI-Key": "e54e2aac49msh55d02c948e82d0ap1ba4c9jsnaeac8e303c4f",
+          "X-RapidAPI-Host": "youtube-data8.p.rapidapi.com"
+        }
+      };
+
+      try {
+        const response = await axios.request(options);
+        console.log(response.data);
+        setAutocomplete(response?.data?.results)
+      } catch (error) {
+        errorHandling(error)
+      }
     }
   }
 

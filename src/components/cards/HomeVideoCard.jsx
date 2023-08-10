@@ -58,24 +58,23 @@ const HomeVideoCard = ({
 
           <Box color={"white"}>
             <Text fontWeight={"semibold"}>{title}</Text>
-            <Text color={"#b7b5b5"} marginTop={"5px"} fontSize={"xs"}>
-              {channelName}
-            </Text>
-            <Flex margintop="5px" gap={2}>
-              {views && (
-                <>
-                  <Text color={"#b7b5b5"} fontSize={"sm"}>
-                    {views ? `${views} views` : ""}
-                  </Text>
-                  <Text color={"#b7b5b5"} fontSize={"sm"}>
-                    |
-                  </Text>
-                </>
-              )}
-              <Text color={"#b7b5b5"} fontSize={"sm"}>
-                {postTime || ""}
+            <Box
+              marginTop={"5px"}
+              gap={3}
+              display={{ base: "flex", sm: "flex", md: "block" }}
+            >
+              <Text color={"#b7b5b5"} fontSize={"xs"}>
+                {channelName}
               </Text>
-            </Flex>
+              <Flex margintop="5px" gap={2}>
+                <Text color={"#b7b5b5"} fontSize={"xs"}>
+                  {views ? `${views} views` : ""}
+                </Text>
+                <Text color={"#b7b5b5"} fontSize={"xs"}>
+                  {postTime || ""}
+                </Text>
+              </Flex>
+            </Box>
           </Box>
         </Flex>
       </Box>
