@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -28,9 +28,13 @@ const MobileSearch = () => {
     navigate(`/?query=${searchText}`);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, []);
+
   return (
     <>
-      <Box width={"100%"} height={"100vh"} bg={"#0f0f0f"}>
+      <Box width={"100%"} minHeight={"100vh"} bg={"#0f0f0f"}>
         <Flex padding={"8px 15px"} align={"center"} gap={4}>
           <Text fontSize={"xl"} _hover={{ cursor: "pointer" }}>
             <NavLink to="/">
@@ -83,7 +87,7 @@ const AutoSuggetionMobile = ({ autocomplete }) => (
   <>
     <Flex direction={"column"} gap={2} marginTop={"15px"}>
       {autocomplete &&
-        autocomplete.map((text) => (
+        autocomplete.slice(0, 9).map((text) => (
           <Box key={text} _hover={{ bg: "#3a3a3a" }}>
             <NavLink to={`/?query=${text}`}>
               <Flex padding={"10px 15px"} align={"center"} gap={5}>
