@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# Youtube-clone [Live](https://youtube-clone-shivraj.vercel.app) - Best Youtube clone in ReactJS ⚛️
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![first-view](https://github.com/iamshiv007/youtube-clone/assets/116198388/4a531cfe-7add-4ede-8e9b-5bd98a546101)
 
-## Available Scripts
+## Features 🎯
 
-In the project directory, you can run:
+<details>
+  <summary>1. Infinite Scrolling</summary>
+  <ul>
+    <li>Implemented infinite scrolling using the powerful <a href="https://www.npmjs.com/package/react-infinite-scroll-component">react-infinite-scroll-component</a> library.</li>
+    <li>Experience the same seamless scrolling used by platforms like Facebook, Instagram, YouTube, and TikTok, etc.</li>
+  </ul>
+</details>
 
-### `npm start`
+<details>
+  <summary>2. Modern Dark Theme</summary>
+  <ul>
+    <li>Most modern applications use a dark theme.</li>
+    <li>It's an eye-comfortable and highly demanded feature.</li>
+  </ul>
+</details>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<details>
+  <summary>3. Loading UI</summary>
+  <ul>
+    <li>I have used the Chakra UI <a href="https://chakra-ui.com/docs/components/skeleton">Skeleton</a> component for loading.</li>
+    <li>It's a very important feature for a good user experience.</li>
+  </ul>
+</details>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<details>
+  <summary>4. Country Option 🌍</summary>
+  <ul>
+    <li>I have provided users with a country option to filter videos.</li>
+    <li>With this option, users can embark on a journey around the world and become creative thinkers.</li>
+  </ul>
+</details>
 
-### `npm test`
+<details>
+  <summary>5. Autocomplete Search Bar</summary>
+  <ul>
+    <li>I created an Autocomplete Search bar using the Google Queries API - <em>https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&num=10&q=${query}</em></li>
+    <li>The Autocomplete Search bar provides a similar experience to YouTube for my application.</li>
+  </ul>
+</details>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
