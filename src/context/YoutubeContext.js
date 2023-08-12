@@ -33,7 +33,7 @@ export const ContextProvider = ({ children }) => {
           gl: "US"
         },
         headers: {
-          "X-RapidAPI-Key": "e54e2aac49msh55d02c948e82d0ap1ba4c9jsnaeac8e303c4f",
+          "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
           "X-RapidAPI-Host": "youtube-data8.p.rapidapi.com"
         }
       };

@@ -6,7 +6,13 @@ import {
   InputLeftElement,
   Text,
 } from "@chakra-ui/react";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { BiSearch } from "react-icons/bi";
 import { MdKeyboardVoice } from "react-icons/md";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -20,9 +26,12 @@ const SearchBox = () => {
   const [showSuggestion, setShowSuggestion] = useState(false);
   const inputRef = useRef();
 
-  const generateAutocompleteFun = debounce((query) => {
-    generateAutocomplete(query);
-  }, 800);
+  const generateAutocompleteFun = useCallback(
+    debounce((query) => {
+      generateAutocomplete(query);
+    }, 500),
+    []
+  );
 
   useEffect(() => {
     const handleMouseDown = (event) => {

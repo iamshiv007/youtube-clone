@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -18,10 +18,13 @@ const MobileSearch = () => {
   const { generateAutocomplete, autocomplete } = useContext(YoutubeContext);
   const [searchText, setSearchText] = useState("");
 
-  const generateAutocompleteFun = debounce((query) => {
-    generateAutocomplete(query);
-  }, 800);
-
+  const generateAutocompleteFun = useCallback(
+    debounce((query) => {
+      generateAutocomplete(query);
+    }, 500),
+    []
+  );
+  
   const navigate = useNavigate();
 
   const searchFun = () => {
@@ -29,7 +32,7 @@ const MobileSearch = () => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
   }, []);
 
   return (
