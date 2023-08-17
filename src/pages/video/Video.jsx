@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import YouTube from "react-youtube";
 import {
   Avatar,
@@ -27,6 +27,8 @@ const Video = () => {
   const [videoDetails, setvideoDetails] = useState({});
   const [channelDetails, setChannelDetails] = useState({});
   const { videoId, channelId } = useParams();
+
+  const navigate = useNavigate();
 
   const getVideoDetails = async () => {
     try {
@@ -67,6 +69,18 @@ const Video = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const handleBackButton = () => {
+      navigate("/"); // Redirect to the home page
+    };
+
+    window.onpopstate = handleBackButton;
+
+    return () => {
+      window.onpopstate = null; // Clean up the event listener
+    };
+  }, []);
 
   useEffect(() => {
     getVideoDetails();
