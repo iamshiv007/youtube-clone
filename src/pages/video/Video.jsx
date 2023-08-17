@@ -31,14 +31,14 @@ const Video = () => {
   const getVideoDetails = async () => {
     try {
       const res = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_KEY_GOOGLE2}`
       );
       setvideoDetails(res.data.items[0]);
       console.log(res.data);
     } catch (error) {
       try {
         const res = await axios.get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${process.env.REACT_APP_YOUTUBE_API_KEY_GOOGLE1}`
         );
         setvideoDetails(res.data.items[0]);
         console.log(res.data);
@@ -51,14 +51,14 @@ const Video = () => {
   const getChannelDetails = async () => {
     try {
       const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`
+        `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_KEY_GOOGLE2}`
       );
       console.log(res2.data);
       setChannelDetails(res2.data.items[0]);
     } catch (error) {
       try {
         const res2 = await axios.get(
-          `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`
+          `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${channelId}&key=${process.env.REACT_APP_YOUTUBE_API_KEY_GOOGLE1}`
         );
         console.log(res2.data);
         setChannelDetails(res2.data.items[0]);
@@ -70,6 +70,7 @@ const Video = () => {
 
   useEffect(() => {
     getVideoDetails();
+    window.scrollTo(0, 0);
   }, [videoId]);
 
   useEffect(() => {
@@ -87,7 +88,7 @@ const Video = () => {
   };
 
   const opts2 = {
-    height: "240px",
+    height: "210px",
     width: "100%",
     showRelatedVideos: false,
     playerVars: {
@@ -109,7 +110,12 @@ const Video = () => {
         direction={{ base: "column", sm: "column", md: "row" }}
       >
         <Box width={{ md: "860px" }}>
-          <Box display={{ base: "none", sm: "none", md: "block" }}>
+          <Box
+            width={"860px"}
+            height={"485px"}
+            background={"#2e2c2c"}
+            display={{ base: "none", sm: "none", md: "block" }}
+          >
             <YouTube videoId={videoId} opts={opts1} />
           </Box>
           <Box
@@ -117,12 +123,18 @@ const Video = () => {
             top={"0"}
             display={{ base: "block", sm: "block", md: "none" }}
             zIndex={13}
+            height={"210px"}
+            background={"#2e2c2c"}
           >
             <YouTube videoId={videoId} opts={opts2} />
           </Box>
 
           <Box>
-            <Text color={"white"} padding={"8px"} fontSize="22px">
+            <Text
+              color={"white"}
+              padding={"8px"}
+              fontSize={{ base: "lg", md: "22px" }}
+            >
               {videoDetails?.snippet?.title}
             </Text>
 

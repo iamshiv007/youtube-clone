@@ -33,7 +33,7 @@ export const ContextProvider = ({ children }) => {
           gl: "US"
         },
         headers: {
-          "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
+          "X-RapidAPI-Key": process.env.REACT_APP_YOUTUBE_API_KEY_RAPIDAPI,
           "X-RapidAPI-Host": "youtube-data8.p.rapidapi.com"
         }
       };
@@ -52,7 +52,7 @@ export const ContextProvider = ({ children }) => {
   const getTrendingVideos = async () => {
     setIsLoading(true)
     try {
-      const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${`${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}`}&maxResults=15`)
+      const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${`${process.env.REACT_APP_YOUTUBE_API_KEY_GOOGLE2}`}&maxResults=15`)
       setTrendingVideos(res.data.items)
       setTrendingVideosLength(res.data.pageInfo.totalResults)
       setNextPageToken(res.data.nextPageToken)
@@ -60,7 +60,7 @@ export const ContextProvider = ({ children }) => {
     } catch (error) {
 
       try {
-        const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${`${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}`}&maxResults=15`)
+        const res = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${`${process.env.REACT_APP_YOUTUBE_API_KEY_GOOGLE1}`}&maxResults=15`)
         setTrendingVideos(res.data.items)
         setTrendingVideosLength(res.data.pageInfo.totalResults)
         setNextPageToken(res.data.nextPageToken)
@@ -88,7 +88,7 @@ export const ContextProvider = ({ children }) => {
         videoDuration: "medium"
       },
       headers: {
-        "X-RapidAPI-Key": `${process.env.REACT_APP_RAPID_API_KEY}`,
+        "X-RapidAPI-Key": `${process.env.REACT_APP_YOUTUBE_API_KEY_RAPIDAPI}`,
         "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com"
       }
     };
@@ -99,16 +99,16 @@ export const ContextProvider = ({ children }) => {
       setIsLoading(false)
       setSearchVideos(response.data.items)
     } catch (error) {
-      // alert("Rapid api not working using alternate api")
+      alert("Rapid api not working using alternate api")
 
-      // try {
-      //   const response2 = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=business&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=50&type=video&videoDuration=medium`)
-      //   console.log(response2.data);
-      //   setIsLoading(false)
-      //   setSearchVideos(response2.data.items)
-      // } catch (error) {
-      errorHandling(error)
-      // }
+      try {
+        const response2 = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=business&key=${process.env.REACT_APP_YOUTUBE_API_KEY_GOOGLE1}&maxResults=50&type=video&videoDuration=medium`)
+        console.log(response2.data);
+        setIsLoading(false)
+        setSearchVideos(response2.data.items)
+      } catch (error) {
+        errorHandling(error)
+      }
 
     }
   }

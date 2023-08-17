@@ -36,7 +36,7 @@ const TrendingList = () => {
 
       console.log(nextPageToken);
       const res2 = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE2}&maxResults=15&pageToken=${nextPageToken}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_KEY_GOOGLE2}&maxResults=15&pageToken=${nextPageToken}`
       );
       setTrendingVideos((prevTrendingVideos) => [
         ...prevTrendingVideos,
@@ -50,7 +50,7 @@ const TrendingList = () => {
         setIsLoading(true);
        
         const res2 = await axios.get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_GOOGLE1}&maxResults=15&pageToken=${nextPageToken}`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${country}&key=${process.env.REACT_APP_YOUTUBE_API_KEY_GOOGLE1}&maxResults=15&pageToken=${nextPageToken}`
         );
         setTrendingVideos((prevTrendingVideos) => [
           ...prevTrendingVideos,

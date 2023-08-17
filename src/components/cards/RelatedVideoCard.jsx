@@ -21,7 +21,7 @@ const RelatedVideoCard = ({
           position={"relative"}
           overflow={"hidden"}
           width={"140px"}
-          height={"fit-content"}
+          height={"70px"}
         >
           <Image
             src={thumbnail}
